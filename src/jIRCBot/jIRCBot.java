@@ -3,6 +3,7 @@ package jIRCBot;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Objects;
 import java.util.Properties;
 
 import org.pircbotx.Configuration;
@@ -41,8 +42,13 @@ public class jIRCBot extends ListenerAdapter {
             }
             // Quit gracefully
             if (event.getMessage().startsWith("!quit")) {
-            	event.getBot().stopBotReconnect();
-            	event.getBot().sendIRC().quitServer("Bye bye!");
+            	String user = event.getUser().getNick().toString();
+            	String owner = Owner.getOwner().toString();
+            	
+            	if (Objects.equals(user, owner)) {
+            		event.getBot().stopBotReconnect();
+            		event.getBot().sendIRC().quitServer();
+            	}
             }
         }
         
