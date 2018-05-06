@@ -9,7 +9,7 @@ public class Knowledge {
 		Pattern pattern = Pattern.compile("!(\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
 		Matcher m = pattern.matcher(message);
 		if (m.matches()) {
-			String answer = "OK, I now know about " + m.group(2);
+			String answer = "OK " + user + ", I now know about " + m.group(2);
 			return answer;
 		}
 		return "Sorry, I don't understand!";
@@ -19,7 +19,7 @@ public class Knowledge {
 		Pattern pattern = Pattern.compile("!(\\b\\w+?\\b)\\s(\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
 		if (m.matches()) {
-			String answer = "OK, I forgot about " + m.group(2);
+			String answer = "OK " + user + ", I forgot about " + m.group(2);
 			return answer;
 		} 
 		return "Sorry, I don't understand!";

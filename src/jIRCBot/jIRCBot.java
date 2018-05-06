@@ -26,13 +26,13 @@ public class jIRCBot extends ListenerAdapter {
             if (event.getMessage().startsWith("!learn")) {
             	String message = event.getMessage().toString();
             	String user = event.getUser().getNick().toString();
-            	event.respond(Knowledge.learn(message, user));
+            	event.respondWith(Knowledge.learn(message, user));
             }
             // Forget a topic
             if (event.getMessage().startsWith("!forget")) {
             	String message = event.getMessage().toString();
             	String user = event.getUser().getNick().toString();
-            	event.respond(Knowledge.forget(message, user));
+            	event.respondWith(Knowledge.forget(message, user));
             }
             // Query a topic
             if (event.getMessage().startsWith("?")) {
