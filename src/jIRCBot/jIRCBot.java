@@ -73,6 +73,11 @@ public class jIRCBot extends ListenerAdapter {
         		}
         	}
         	
+        	// Create the database and knowledge table (if it exists, it will not be re-created)
+        	Knowledge kb = new Knowledge();
+        	kb.createKnowledgeDB();
+        	kb.createKnowledgeTable();
+        	
         	// Read in strings
         	String ircName		= prop.getProperty("ircName");
         	String ircLogin		= prop.getProperty("ircLogin");
