@@ -64,10 +64,15 @@ public class Knowledge {
 			Knowledge kb = new Knowledge();
 			String result[] = kb.getKnowledge(topic);
 			
-			String answer = "Here's what I know about " + topic + ": " + result[1];
-			return answer;
+			if (result[0] != null) {
+				String answer = "Here's what I know about " + topic + ": " + result[1];
+				return answer;
+			} else {
+				String answer = "Sorry, but I don't know about " + topic;
+				return answer;
+			}
 		}
-		return "Sorry, but I don't know about" + m.group(1);
+		return "Sorry, I don't understand!";
 	}
 	
 	// Tell somebody a topic
