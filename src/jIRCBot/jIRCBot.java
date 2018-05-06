@@ -40,7 +40,7 @@ public class jIRCBot extends ListenerAdapter {
             	String message = event.getMessage().toString();
             	event.respondWith(Knowledge.query(message));
             }
-            // Quit gracefully
+            // Quit gracefully if owner requests
             if (event.getMessage().startsWith("!quit")) {
             	String user = event.getUser().getNick().toString();
             	String owner = Owner.getOwner().toString();
