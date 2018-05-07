@@ -67,7 +67,6 @@ public class jIRCBot extends ListenerAdapter {
         		String ircLogin		= properties.getString("ircLogin");
         		String ircRealName	= properties.getString("ircRealName");
         		String ircServer	= properties.getString("ircServer");
-        		String ircNickserv	= properties.getString("ircNickserv");
         		String ircPassword	= properties.getString("ircPassword");
         		int ircPort			= properties.getInt("ircPort");
         		
