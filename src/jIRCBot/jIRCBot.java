@@ -18,34 +18,34 @@ public class jIRCBot extends ListenerAdapter {
         	// Ask the 8ball
             if (event.getMessage().startsWith("!8ball")) {
                 event.respondWith(EightBall.askTheBall());
-            }
-            // BOFH
-            if (event.getMessage().startsWith("!bofh")) {
+            // Ask the BOFH
+            } else if (event.getMessage().startsWith("!bofh")) {
             	event.respondWith(BOFH.askTheBOFH());
-            }
             // Learn a topic
-            if (event.getMessage().startsWith("!learn")) {
+            } else if (event.getMessage().startsWith("!learn")) {
             	String message = event.getMessage().toString();
             	String user = event.getUser().getNick().toString();
             	event.respondWith(Knowledge.learn(message, user));
-            }
             // Forget a topic
-            if (event.getMessage().startsWith("!forget")) {
+            } else if (event.getMessage().startsWith("!forget")) {
             	String message = event.getMessage().toString();
             	String user = event.getUser().getNick().toString();
             	event.respondWith(Knowledge.forget(message, user));
-            }
             // Query a topic
-            if (event.getMessage().startsWith("?")) {
+            } else if (event.getMessage().startsWith("?")) {
             	String message = event.getMessage().toString();
             	event.respondWith(Knowledge.query(message));
-            }
-            // Quit gracefully if owner requests
-            // TODO Write a simple password authentication method
-            if (event.getMessage().startsWith("!quit")) {
+            // URL title
+            } else if (event.getMessage().contains("http")) {
+            	String message = event.getMessage().toString();
+            	String urlTitle = URLTitle.getTitle(message);
+            	if (urlTitle != null || urlTitle != "") {
+            		event.respondWith("^ " + urlTitle);
+            	}
+            // Quit gracefully if requested by owner
+            } else if (event.getMessage().startsWith("!quit")) {
             	String user = event.getUser().getNick().toString();
             	String owner = Owner.getOwner().toString();
-            	
             	if (Objects.equals(user, owner)) {
             		event.getBot().stopBotReconnect();
             		event.getBot().sendIRC().quitServer();
