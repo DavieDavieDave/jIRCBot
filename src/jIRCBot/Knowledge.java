@@ -34,7 +34,7 @@ public class Knowledge {
 	    	Knowledge kb = new Knowledge();
 	    	
 	    	if (kb.botUser(user)) {
-	    	
+	    		
 		    	if (kb.getKnowledge(topic)[0] != null) {
 		    		String answer = "I already known about " + topic;
 		    		return answer;

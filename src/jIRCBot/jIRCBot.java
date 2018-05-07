@@ -39,7 +39,7 @@ public class jIRCBot extends ListenerAdapter {
             } else if (event.getMessage().contains("http")) {
             	String message = event.getMessage().toString();
             	String urlTitle = URLTitle.getTitle(message);
-            	if (urlTitle != null || urlTitle != "") {
+            	if (urlTitle != null) {
             		event.respondWith("^ " + urlTitle);
             	}
             // Quit gracefully if requested by owner

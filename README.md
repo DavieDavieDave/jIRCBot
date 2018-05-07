@@ -17,5 +17,6 @@ Create a config.properties file with the following:
     botOwner=nickname
     botOwnerPassword=
     botUsers=nickname1|nickname2
+    badWords=bad|words|go|here
 
 The properties `ircChannels` and `botUsers` are delimited by `|`.
