@@ -10,11 +10,12 @@ Create a config.properties file with the following:
     ircName=jIRCBot
     ircLogin=jIRCBot
     ircRealName=jIRCBot
+    ircSASLPassword=NickServPassword
     ircServer=irc.freenode.net
     ircPort=6697
     ircChannels=##jircbot-test|##jircbot-test2
-    ircNickserv=NickServ
-    ircPassword=NickServPassword
     botOwner=nickname
     botOwnerPassword=
     botUsers=nickname1|nickname2
+
+The properties `ircChannels` and `botUsers` are delimited by `|`.
