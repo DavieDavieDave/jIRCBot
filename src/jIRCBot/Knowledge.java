@@ -5,7 +5,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -131,12 +130,10 @@ public class Knowledge {
     	
     	File f = new File(database);
     	
-    	if (f.exists()) {
-    		System.out.println("Database already exists.");
-    	} else {
+    	if (!f.exists()) {
 	        try (Connection conn = connect()) {
 	            if (conn != null) {
-	                DatabaseMetaData meta = conn.getMetaData();
+	                // DatabaseMetaData meta = conn.getMetaData();
 	                System.out.println("A new database has been created.");
 	            }
 	 

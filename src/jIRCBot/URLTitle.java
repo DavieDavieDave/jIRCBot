@@ -35,6 +35,8 @@ public class URLTitle {
 		        
 		        URLTitle ul = new URLTitle();
 		        
+		        scanner.close();
+		        
 		        if (!ul.badWords(title)) {
 		        	return title;
 		        } else {
