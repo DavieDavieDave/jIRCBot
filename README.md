@@ -9,7 +9,10 @@ Create a config.properties file with the following:
     ircLogin=jIRCBot
     ircRealName=jIRCBot
     ircServer=irc.freenode.net
-    ircPort=6667
-    ircChannels=##jircbot-test
+    ircPort=6697
+    ircChannels=##jircbot-test|##jircbot-test2
+    ircNickserv=NickServ
+    ircPassword=NickServPassword
     botOwner=nickname
     botOwnerPassword=
+    botUsers=nickname1|nickname2
