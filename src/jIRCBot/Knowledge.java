@@ -31,10 +31,11 @@ public class Knowledge {
 			String data = m.group(3);
 			
 	    	Knowledge kb = new Knowledge();
+	    	BadWords bw = new BadWords();
 	    	
 	    	if (kb.botUser(user)) {
 	    		
-	    		if (!kb.badWords(topic) && !kb.badWords(data)) {
+	    		if (!bw.badWords(topic) && !bw.badWords(data)) {
 	    		
 			    	if (kb.getKnowledge(topic)[0] != null) {
 			    		String answer = "I already known about " + topic + ".";
@@ -230,27 +231,6 @@ public class Knowledge {
 			} else {
 				return false;
 			}
-		} catch (ConfigurationException e) {
-			System.out.print(e.getMessage());
-		}
-		return false;
-    }
-    
-    public boolean badWords(String line) {
-		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
-			String[] badWords = properties.getString("badWords").toLowerCase().split("\\|");
-			
-			String[] wordList = line.toLowerCase().split("\\s+");
-			
-			for (String word : wordList) {
-				if(Arrays.asList(badWords).contains(word)) {
-					return true;
-				} else {
-					return false;
-				}
-			}
-
 		} catch (ConfigurationException e) {
 			System.out.print(e.getMessage());
 		}
