@@ -35,17 +35,23 @@ public class Knowledge {
 	    	
 	    	if (kb.botUser(user)) {
 	    		
-		    	if (kb.getKnowledge(topic)[0] != null) {
-		    		String answer = "I already known about " + topic;
-		    		return answer;
-		    	} else {
-		    		kb.addKnowledge(topic, user, data);
-		    		String answer = "OK " + user + ", I now know about " + topic;
-		    		return answer;
-		    	}
-		    	
+	    		if (!kb.badWords(topic) && !kb.badWords(data)) {
+	    		
+			    	if (kb.getKnowledge(topic)[0] != null) {
+			    		String answer = "I already known about " + topic + ".";
+			    		return answer;
+			    	} else {
+			    		kb.addKnowledge(topic, user, data);
+			    		String answer = "OK " + user + ", I now know about " + topic + ".";
+			    		return answer;
+			    	}
+	    		} else {
+	    			String answer = "Sorry " + user + ", but I'm not allowed to learn about that.";
+	    			return answer;
+	    		}
+			    	
 	    	} else {
-	    		String answer = "Sorry " + user + ", you're not allowed to do that";
+	    		String answer = "Sorry " + user + ", you're not allowed to do that.";
 	    		return answer;
 	    	}
 		}
@@ -64,14 +70,14 @@ public class Knowledge {
 			
 				if (kb.getKnowledge(topic)[0] != null) {
 					kb.deleteKnowledge(topic);
-					String answer = "OK " + user + ", I forgot about " + topic;
+					String answer = "OK " + user + ", I forgot about " + topic + ".";
 					return answer;
 				} else {
-					String answer = "Sorry, I don't know about " + topic;
+					String answer = "Sorry, I don't know about " + topic + ".";
 					return answer;
 				}
 			} else {
-				String answer = "Sorry " + user + ", you're not allowed to do that";
+				String answer = "Sorry " + user + ", you're not allowed to do that.";
 	    		return answer;
 			}
 		} 
@@ -227,6 +233,27 @@ public class Knowledge {
 			} else {
 				return false;
 			}
+		} catch (ConfigurationException e) {
+			System.out.print(e.getMessage());
+		}
+		return false;
+    }
+    
+    public boolean badWords(String line) {
+		try {
+			PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
+			String[] badWords = properties.getString("badWords").toLowerCase().split("\\|");
+			
+			String[] wordList = line.toLowerCase().split("\\s+");
+			
+			for (String word : wordList) {
+				if(Arrays.asList(badWords).contains(word)) {
+					return true;
+				} else {
+					return false;
+				}
+			}
+
 		} catch (ConfigurationException e) {
 			System.out.print(e.getMessage());
 		}
