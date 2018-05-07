@@ -1,10 +1,13 @@
 package jIRCBot;
 
+import java.util.Arrays;
 import java.util.Objects;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
+import org.pircbotx.UtilSSLSocketFactory;
+import org.pircbotx.cap.SASLCapHandler;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
@@ -64,19 +67,28 @@ public class jIRCBot extends ListenerAdapter {
         		String ircLogin		= properties.getString("ircLogin");
         		String ircRealName	= properties.getString("ircRealName");
         		String ircServer	= properties.getString("ircServer");
-        		String ircChannels	= properties.getString("ircChannels");
+        		String ircNickserv	= properties.getString("ircNickserv");
+        		String ircPassword	= properties.getString("ircPassword");
         		int ircPort			= properties.getInt("ircPort");
-        	
+        		
+        		String[] ircChannels = properties.getString("ircChannels").split("\\|");
+        		
+        		Iterable<String> channelList = Arrays.asList(ircChannels);
+        		
 	            //Configure what we want our bot to do
 	            Configuration configuration = new Configuration.Builder()
 	                            .setName(ircName)
 	                            .setLogin(ircLogin)
 	                            .setRealName(ircRealName)
 	                            .addServer(ircServer, ircPort)
-	                            .addAutoJoinChannel(ircChannels)
+	                            .setSocketFactory(new UtilSSLSocketFactory().trustAllCertificates())
+	                            .setSocketFactory(new UtilSSLSocketFactory().disableDiffieHellman())
+	                            .addCapHandler(new SASLCapHandler(ircName, ircPassword))
+	                            .addAutoJoinChannels(channelList)
 	                            .addListener(new jIRCBot())
 	                            .buildConfiguration();
 	
+	            
 	            //Create our bot with the configuration
 	            PircBotX bot = new PircBotX(configuration);
 	            //Connect to the server

@@ -1,5 +1,6 @@
 package jIRCBot;
 
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -12,6 +13,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import java.io.File;
+
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
+
 
 public class Knowledge {
 	
@@ -28,12 +33,19 @@ public class Knowledge {
 			
 	    	Knowledge kb = new Knowledge();
 	    	
-	    	if (kb.getKnowledge(topic)[0] != null) {
-	    		String answer = "I already known about " + topic;
-	    		return answer;
+	    	if (kb.botUser(user)) {
+	    	
+		    	if (kb.getKnowledge(topic)[0] != null) {
+		    		String answer = "I already known about " + topic;
+		    		return answer;
+		    	} else {
+		    		kb.addKnowledge(topic, user, data);
+		    		String answer = "OK " + user + ", I now know about " + topic;
+		    		return answer;
+		    	}
+		    	
 	    	} else {
-	    		kb.addKnowledge(topic, user, data);
-	    		String answer = "OK " + user + ", I now know about " + topic;
+	    		String answer = "Sorry " + user + ", you're not allowed to do that";
 	    		return answer;
 	    	}
 		}
@@ -47,14 +59,21 @@ public class Knowledge {
 		if (m.matches()) {
 			String topic = m.group(2);
 			Knowledge kb = new Knowledge();
-			if (kb.getKnowledge(topic)[0] != null) {
-				kb.deleteKnowledge(topic);
-				String answer = "OK " + user + ", I forgot about " + topic;
-				return answer;
+			
+			if (kb.botUser(user)) {
+			
+				if (kb.getKnowledge(topic)[0] != null) {
+					kb.deleteKnowledge(topic);
+					String answer = "OK " + user + ", I forgot about " + topic;
+					return answer;
+				} else {
+					String answer = "Sorry, I don't know about " + topic;
+					return answer;
+				}
 			} else {
-				String answer = "Sorry, I don't know about " + topic;
-				return answer;
-			}			
+				String answer = "Sorry " + user + ", you're not allowed to do that";
+	    		return answer;
+			}
 		} 
 		return "Sorry, I don't understand!";
 	}
@@ -197,6 +216,21 @@ public class Knowledge {
         String[] result = {null,null};
         return result;
         
+    }
+    
+    public boolean botUser(String user) {
+		try {
+			PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
+			String[] botUsers = properties.getString("botUsers").split("\\|");
+			if (Arrays.asList(botUsers).contains(user)) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (ConfigurationException e) {
+			System.out.print(e.getMessage());
+		}
+		return false;
     }
 
 }
