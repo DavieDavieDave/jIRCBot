@@ -42,15 +42,21 @@ public class Knowledge {
 	
 	// Forget a topic
 	public static String forget(String message, String user) {
-		/*
 		Pattern pattern = Pattern.compile("!(\\b\\w+?\\b)\\s(\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
 		if (m.matches()) {
-			String answer = "OK " + user + ", I forgot about " + m.group(2);
-			return answer;
+			String topic = m.group(2);
+			Knowledge kb = new Knowledge();
+			if (kb.getKnowledge(topic)[0] != null) {
+				kb.deleteKnowledge(topic);
+				String answer = "OK " + user + ", I forgot about " + topic;
+				return answer;
+			} else {
+				String answer = "Sorry, I don't know about " + topic;
+				return answer;
+			}			
 		} 
-		*/
-		return "Not implemented yet!";
+		return "Sorry, I don't understand!";
 	}
 	
 	// Query a topic
@@ -152,6 +158,20 @@ public class Knowledge {
 		    	System.out.println(e.getMessage());
 		    }
 	   	}
+    }
+    
+    public void deleteKnowledge(String topic) {
+    	String sql = "DELETE FROM knowledge WHERE topic = ?";
+    	
+    	if (this.getKnowledge(topic)[0] != null) {
+    		try (Connection conn = this.connect();
+    				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+    			pstmt.setString(1, topic);
+    			pstmt.executeUpdate();
+    		} catch (SQLException e) {
+    			System.out.print(e.getMessage());
+    		}
+    	}
     }
         
     public String[] getKnowledge(String topic) {
