@@ -63,12 +63,12 @@ public class jIRCBot extends ListenerAdapter {
         	// Read in configuration and start the bot
         	try {
         		PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
-        		String ircName		= properties.getString("ircName");
-        		String ircLogin		= properties.getString("ircLogin");
-        		String ircRealName	= properties.getString("ircRealName");
-        		String ircServer	= properties.getString("ircServer");
-        		String ircPassword	= properties.getString("ircPassword");
-        		int ircPort			= properties.getInt("ircPort");
+        		String ircName			= properties.getString("ircName");
+        		String ircLogin			= properties.getString("ircLogin");
+        		String ircRealName		= properties.getString("ircRealName");
+        		String ircServer		= properties.getString("ircServer");
+        		String ircSASLPassword	= properties.getString("ircSASLPassword");
+        		int ircPort				= properties.getInt("ircPort");
         		
         		String[] ircChannels = properties.getString("ircChannels").split("\\|");
         		
@@ -82,7 +82,7 @@ public class jIRCBot extends ListenerAdapter {
 	                            .addServer(ircServer, ircPort)
 	                            .setSocketFactory(new UtilSSLSocketFactory().trustAllCertificates())
 	                            .setSocketFactory(new UtilSSLSocketFactory().disableDiffieHellman())
-	                            .addCapHandler(new SASLCapHandler(ircName, ircPassword))
+	                            .addCapHandler(new SASLCapHandler(ircName, ircSASLPassword))
 	                            .addAutoJoinChannels(channelList)
 	                            .addListener(new jIRCBot())
 	                            .buildConfiguration();
