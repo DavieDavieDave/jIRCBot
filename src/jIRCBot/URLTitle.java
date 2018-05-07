@@ -27,7 +27,10 @@ public class URLTitle {
 		        String responseBody = scanner.useDelimiter("\\A").next();
 		        String urlTitle = (responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>")));
 		        
-		        String title = urlTitle.trim().replaceAll("\\&quot;", "\"");
+		        String title = urlTitle.trim().replaceAll("\\&quot;", "\"")
+		        							  .replaceAll("\\&amp;", "&")
+		        							  .replaceAll("\\&gt;", ">")
+		        							  .replaceAll("\\&lt;", "<");
 		        
 		        BadWords bw = new BadWords();
 		        
