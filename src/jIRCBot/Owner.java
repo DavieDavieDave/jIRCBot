@@ -1,36 +1,43 @@
 package jIRCBot;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Properties;
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class Owner {
 
+	static String botConfig = "config.properties";
+	
+	// Get bot owner
 	public static String getOwner() {
-		
-    	// Read in config.properties	
-    	Properties prop = new Properties();
-    	InputStream input = null;
-    		
-    	try {
-    		input = new FileInputStream("config.properties");
-    		prop.load(input);
-    	} catch (IOException ex) {
-    		ex.printStackTrace();
-    	} finally {
-    		if (input != null) {
-    			try {
-    				input.close();
-    			} catch (IOException e) {
-    				e.printStackTrace();
-    			}
-    		}
-    	}
-    	
-    	String botOwner	= prop.getProperty("botOwner");
-		
-		return botOwner;
+		try {
+			PropertiesConfiguration properties = new PropertiesConfiguration(botConfig);
+			String botOwner = properties.getString("botOwner");
+			return botOwner;
+		} catch (ConfigurationException e) {
+			System.out.print(e.getMessage());
+		}
+		return null;
 	}
 
+	// Set bot owner
+	public static void setOwner(String user, String password) {
+		try {
+			PropertiesConfiguration properties = new PropertiesConfiguration(botConfig);
+			properties.setProperty("botOwner", user);
+			properties.setProperty("botOwnerPassword", password);
+			properties.save();
+		} catch (ConfigurationException e) {
+			System.out.print(e.getMessage());
+		}
+	}
+	
+	public static void passwordAuth(String user, String password) {
+		// TODO Simple password authentication
+	}
+	
+	public static void main(String[] args) {
+		//setOwner("m0nkey_","");
+		System.out.println(getOwner());
+	}
+	
 }

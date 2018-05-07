@@ -1,11 +1,8 @@
 package jIRCBot;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Objects;
-import java.util.Properties;
-
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration.PropertiesConfiguration;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.hooks.ListenerAdapter;
@@ -41,6 +38,7 @@ public class jIRCBot extends ListenerAdapter {
             	event.respondWith(Knowledge.query(message));
             }
             // Quit gracefully if owner requests
+            // TODO Write a simple password authentication method
             if (event.getMessage().startsWith("!quit")) {
             	String user = event.getUser().getNick().toString();
             	String owner = Owner.getOwner().toString();
@@ -53,54 +51,38 @@ public class jIRCBot extends ListenerAdapter {
         }
         
         public static void main(String[] args) throws Exception {
-        		
-        	// Read in config.properties	
-        	Properties prop = new Properties();
-        	InputStream input = null;
-        		
-        	try {
-        		input = new FileInputStream("config.properties");
-        		prop.load(input);
-        	} catch (IOException ex) {
-        		ex.printStackTrace();
-        	} finally {
-        		if (input != null) {
-        			try {
-        				input.close();
-        			} catch (IOException e) {
-        				e.printStackTrace();
-        			}
-        		}
-        	}
         	
         	// Create the database and knowledge table (if it exists, it will not be re-created)
         	Knowledge kb = new Knowledge();
         	kb.createKnowledgeDB();
         	kb.createKnowledgeTable();
-        	
-        	// Read in strings
-        	String ircName		= prop.getProperty("ircName");
-        	String ircLogin		= prop.getProperty("ircLogin");
-        	String ircRealName	= prop.getProperty("ircRealName");
-        	String ircServer	= prop.getProperty("ircServer");
-        	String ircChannels	= prop.getProperty("ircChannels");
-        	
-        	// Read in integers
-        	int ircPort = Integer.parseInt(prop.getProperty("ircPort"));
-        	
-            //Configure what we want our bot to do
-            Configuration configuration = new Configuration.Builder()
-                            .setName(ircName)
-                            .setLogin(ircLogin)
-                            .setRealName(ircRealName)
-                            .addServer(ircServer, ircPort)
-                            .addAutoJoinChannel(ircChannels)
-                            .addListener(new jIRCBot())
-                            .buildConfiguration();
 
-            //Create our bot with the configuration
-            PircBotX bot = new PircBotX(configuration);
-            //Connect to the server
-            bot.startBot();
+        	// Read in configuration and start the bot
+        	try {
+        		PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
+        		String ircName		= properties.getString("ircName");
+        		String ircLogin		= properties.getString("ircLogin");
+        		String ircRealName	= properties.getString("ircRealName");
+        		String ircServer	= properties.getString("ircServer");
+        		String ircChannels	= properties.getString("ircChannels");
+        		int ircPort			= properties.getInt("ircPort");
+        	
+	            //Configure what we want our bot to do
+	            Configuration configuration = new Configuration.Builder()
+	                            .setName(ircName)
+	                            .setLogin(ircLogin)
+	                            .setRealName(ircRealName)
+	                            .addServer(ircServer, ircPort)
+	                            .addAutoJoinChannel(ircChannels)
+	                            .addListener(new jIRCBot())
+	                            .buildConfiguration();
+	
+	            //Create our bot with the configuration
+	            PircBotX bot = new PircBotX(configuration);
+	            //Connect to the server
+	            bot.startBot();
+        	} catch (ConfigurationException e) {
+        		System.out.print(e.getMessage());
+        	}
         }
 }
