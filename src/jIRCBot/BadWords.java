@@ -7,13 +7,14 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class BadWords {
 
-    public boolean badWords(String line) {
+	/* 
+	 * Searches for bad words from the sting provided and returns a boolean
+	 */
+	public boolean badWords(String line) {
 		try {
 			PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
 			String[] badWords = properties.getString("badWords").toLowerCase().split("\\|");
-			
 			String[] wordList = line.toLowerCase().split("\\s+");
-			
 			for (String word : wordList) {
 				if(Arrays.asList(badWords).contains(word)) {
 					return true;
@@ -21,7 +22,6 @@ public class BadWords {
 					return false;
 				}
 			}
-
 		} catch (ConfigurationException e) {
 			System.out.print(e.getMessage());
 		}

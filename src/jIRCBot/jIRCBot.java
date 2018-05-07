@@ -15,7 +15,7 @@ public class jIRCBot extends ListenerAdapter {
         @Override
         public void onGenericMessage(GenericMessageEvent event) {
      	
-        	// Ask the 8ball
+        	// Ask the 8-ball
             if (event.getMessage().startsWith("!8ball")) {
                 event.respondWith(EightBall.askTheBall());
             // Ask the BOFH
@@ -35,14 +35,14 @@ public class jIRCBot extends ListenerAdapter {
             } else if (event.getMessage().startsWith("?")) {
             	String message = event.getMessage().toString();
             	event.respondWith(Knowledge.query(message));
-            // URL title
+            // Return the title of a URL
             } else if (event.getMessage().contains("http")) {
             	String message = event.getMessage().toString();
             	String urlTitle = URLTitle.getTitle(message);
             	if (urlTitle != null) {
             		event.respondWith("^ " + urlTitle);
             	}
-            // Quit gracefully if requested by owner
+            // Gracefully quit if requested by bot owner
             } else if (event.getMessage().startsWith("!quit")) {
             	String user = event.getUser().getNick().toString();
             	String owner = Owner.getOwner().toString();
@@ -53,9 +53,12 @@ public class jIRCBot extends ListenerAdapter {
             }
         }
         
+        /*
+         * Main void
+         */
         public static void main(String[] args) throws Exception {
         	
-        	// Create the database and knowledge table (if it exists, it will not be re-created)
+        	// Prepare the database
         	Knowledge kb = new Knowledge();
         	kb.createKnowledgeDB();
         	kb.createKnowledgeTable();
@@ -74,7 +77,7 @@ public class jIRCBot extends ListenerAdapter {
         		
         		Iterable<String> channelList = Arrays.asList(ircChannels);
         		
-	            //Configure what we want our bot to do
+	            // Configure what we want our bot to do
 	            Configuration configuration = new Configuration.Builder()
 	                            .setName(ircName)
 	                            .setLogin(ircLogin)
@@ -86,12 +89,13 @@ public class jIRCBot extends ListenerAdapter {
 	                            .addAutoJoinChannels(channelList)
 	                            .addListener(new jIRCBot())
 	                            .buildConfiguration();
-	
-	            
-	            //Create our bot with the configuration
+
+	            // Create our bot with the configuration
 	            PircBotX bot = new PircBotX(configuration);
-	            //Connect to the server
+	            
+	            // Connect to the server
 	            bot.startBot();
+	            
         	} catch (ConfigurationException e) {
         		System.out.print(e.getMessage());
         	}

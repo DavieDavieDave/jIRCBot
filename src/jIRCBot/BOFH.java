@@ -4,6 +4,9 @@ import java.util.Random;
 
 public class BOFH {
 
+	/*
+	 * Generate a BOFH excuse
+	 */
 	public static String askTheBOFH() {
 		String[] bofhFirst = {
 				"Temporary",

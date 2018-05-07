@@ -21,7 +21,9 @@ public class Knowledge {
 	
 	String database = "knowledge.db";
 	
-	// Learn a new topic
+	/*
+	 * Learn a new topic
+	 */
 	public static String learn(String message, String user) {
 		Pattern pattern = Pattern.compile("!(\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
 		Matcher m = pattern.matcher(message);
@@ -58,7 +60,9 @@ public class Knowledge {
 		return "Sorry, I don't understand!";
 	}
 	
-	// Forget a topic
+	/*
+	 * Forget a topic
+	 */
 	public static String forget(String message, String user) {
 		Pattern pattern = Pattern.compile("!(\\b\\w+?\\b)\\s(\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
@@ -84,7 +88,9 @@ public class Knowledge {
 		return "Sorry, I don't understand!";
 	}
 	
-	// Query a topic
+	/*
+	 * Query a topic
+	 */
 	public static String query(String message) {
 		Pattern pattern = Pattern.compile("\\?(\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
@@ -105,14 +111,10 @@ public class Knowledge {
 		}
 		return "Sorry, I don't understand!";
 	}
-	
-	// Tell somebody a topic
-	public static String tell(String message, String sender, String receiver) {
-		// TODO allow the bot to 'tell' somebody about a topic
-		return null;
-	}
-	
-	// SQLite DB connection
+		
+	/*
+	 * SQLite DB connection
+	 */
     private Connection connect() {
     	   	
         // SQLite connection string
@@ -126,7 +128,9 @@ public class Knowledge {
         return conn;
     }
 	
-	// Create the DB
+	/*
+	 * Create the knowledge DB if it does not exist
+	 */
     public void createKnowledgeDB() {
     	
     	File f = new File(database);
@@ -134,7 +138,6 @@ public class Knowledge {
     	if (!f.exists()) {
 	        try (Connection conn = connect()) {
 	            if (conn != null) {
-	                // DatabaseMetaData meta = conn.getMetaData();
 	                System.out.println("A new database has been created.");
 	            }
 	 
@@ -145,10 +148,11 @@ public class Knowledge {
     	
     }
     
-    // Create knowledge table
+    /*
+     * Create the knowledge table if it does not exist
+     */
     public void createKnowledgeTable() {
         
-        // SQL statement for creating a new table
         String sql = "CREATE TABLE IF NOT EXISTS knowledge (\n"
         		+ " id integer PRIMARY KEY,\n"
                 + "	topic TEXT NOT NULL,\n"
@@ -165,7 +169,9 @@ public class Knowledge {
         }
     }
     
-    // Add knowledge
+    /*
+     * Add knowledge to the database
+     */
     public void addKnowledge(String topic, String author, String data) {
     	
 	   	if (this.getKnowledge(topic)[0] == null) {
@@ -183,6 +189,9 @@ public class Knowledge {
 	   	}
     }
     
+    /*
+     * Delete knowledge from the database
+     */
     public void deleteKnowledge(String topic) {
     	String sql = "DELETE FROM knowledge WHERE topic = ?";
     	
@@ -196,7 +205,10 @@ public class Knowledge {
     		}
     	}
     }
-        
+
+    /*
+     * Query the database for knowledge
+     */
     public String[] getKnowledge(String topic) {
     	String sql = "SELECT topic, data FROM knowledge WHERE topic = ? LIMIT 1;"; 	
         try (Connection conn = this.connect();
@@ -222,6 +234,9 @@ public class Knowledge {
         
     }
     
+    /*
+     * Compares the user to a know list of users and returns a boolean
+     */
     public boolean botUser(String user) {
 		try {
 			PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");

@@ -10,6 +10,9 @@ import java.util.regex.Pattern;
 
 public class URLTitle {
 	
+	/*
+	 * Return the <TITLE> of the URL provided
+	 */
 	public static String getTitle(String url) {
 
 		String rxUrl = ".*((https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]).*";

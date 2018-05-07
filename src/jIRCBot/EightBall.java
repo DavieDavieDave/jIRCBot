@@ -4,8 +4,11 @@ import java.util.Random;
 
 public class EightBall {
 
+	/*
+	 * Simple 8-ball
+	 */
 	public static String askTheBall() {
-		// TODO Auto-generated method stub
+
 		String[] eightBall = {
 				"It is certain",
 				"It is decidedly so",
@@ -29,7 +32,6 @@ public class EightBall {
 				"Very doubtful"
 		};
 		
-			
 		Random rand = new Random();
 		
 		int randomNumber = rand.nextInt(eightBall.length);
