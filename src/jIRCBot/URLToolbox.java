@@ -8,12 +8,14 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class URLTitle {
+import org.apache.commons.lang.StringEscapeUtils;
+
+public class URLToolbox {
 	
 	/*
 	 * Return the <TITLE> of the URL provided
 	 */
-	public static String getTitle(String url) {
+	public static String getURLTitle(String url) {
 
 		String rxUrl = ".*((https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]).*";
 		Pattern pattern = Pattern.compile(rxUrl);
@@ -29,15 +31,11 @@ public class URLTitle {
 		        Scanner scanner = new Scanner(response);
 		        String responseBody = scanner.useDelimiter("\\A").next();
 		        String urlTitle = (responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>")));
+		        scanner.close();
 		        
-		        String title = urlTitle.trim().replaceAll("\\&quot;", "\"")
-		        							  .replaceAll("\\&amp;", "&")
-		        							  .replaceAll("\\&gt;", ">")
-		        							  .replaceAll("\\&lt;", "<");
+		        String title = StringEscapeUtils.unescapeHtml(urlTitle.trim());
 		        
 		        BadWords bw = new BadWords();
-		        
-		        scanner.close();
 		        
 		        if (!bw.badWords(title)) {
 		        	return title;
@@ -63,5 +61,5 @@ public class URLTitle {
 	    
 		return null;
 	}
-    
+	
 }

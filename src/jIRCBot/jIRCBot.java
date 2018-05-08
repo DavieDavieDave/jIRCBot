@@ -38,7 +38,7 @@ public class jIRCBot extends ListenerAdapter {
             // Return the title of a URL
             } else if (event.getMessage().contains("http")) {
             	String message = event.getMessage().toString();
-            	String urlTitle = URLTitle.getTitle(message);
+            	String urlTitle = URLToolbox.getURLTitle(message);
             	if (urlTitle != null) {
             		event.respondWith("^ " + urlTitle);
             	}
