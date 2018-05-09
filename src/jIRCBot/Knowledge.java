@@ -19,8 +19,6 @@ import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class Knowledge {
 	
-	String database = "knowledge.db";
-	
 	/*
 	 * Learn a new topic
 	 */
@@ -118,7 +116,7 @@ public class Knowledge {
     private Connection connect() {
     	   	
         // SQLite connection string
-        String url = "jdbc:sqlite:" + database;
+        String url = "jdbc:sqlite:" + GlobalVars.knowledgeDB;
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -133,7 +131,7 @@ public class Knowledge {
 	 */
     public void createKnowledgeDB() {
     	
-    	File f = new File(database);
+    	File f = new File(GlobalVars.knowledgeDB);
     	
     	if (!f.exists()) {
 	        try (Connection conn = connect()) {
@@ -239,7 +237,11 @@ public class Knowledge {
      */
     public boolean botUser(String user) {
 		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
+			PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
+			
+			// Reload properties
+			properties.reload();
+			
 			String[] botUsers = properties.getString("botUsers").split("\\|");
 			if (Arrays.asList(botUsers).contains(user)) {
 				return true;

@@ -12,9 +12,15 @@ import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class jIRCBot extends ListenerAdapter {
+	
         @Override
-        public void onGenericMessage(GenericMessageEvent event) {
+        public void onGenericMessage(GenericMessageEvent event) throws ConfigurationException {
      	
+        	PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
+        	
+        	// Reload properties
+        	properties.reload();
+        	
         	// Learn a topic
             if (event.getMessage().startsWith("!learn")) {
             	String message = event.getMessage().toString();
@@ -33,8 +39,9 @@ public class jIRCBot extends ListenerAdapter {
             } else if (event.getMessage().contains("http")) {
             	String message = event.getMessage().toString();
             	String urlTitle = URLToolbox.getURLTitle(message);
-            	if (urlTitle != null) {
-            		event.respondWith("^ " + urlTitle);
+            	Boolean showTitles = Boolean.parseBoolean(properties.getString("botURLTitles"));
+            	if (showTitles && (urlTitle != null)) {
+           			event.respondWith("^ " + urlTitle);
             	}
             // Ask the 8-ball
             } if (event.getMessage().startsWith("!8ball")) {
@@ -67,7 +74,7 @@ public class jIRCBot extends ListenerAdapter {
 
         	// Read in configuration and start the bot
         	try {
-        		PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
+        		PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
         		String ircName			= properties.getString("ircName");
         		String ircLogin			= properties.getString("ircLogin");
         		String ircRealName		= properties.getString("ircRealName");

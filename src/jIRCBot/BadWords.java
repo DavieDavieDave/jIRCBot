@@ -12,7 +12,11 @@ public class BadWords {
 	 */
 	public boolean badWords(String line) {
 		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration("config.properties");
+			PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
+			
+			// Reload properties
+			properties.reload();
+			
 			String[] badWords = properties.getString("badWords").toLowerCase().split("\\|");
 			String[] wordList = line.toLowerCase().split("\\s+");
 			for (String word : wordList) {
