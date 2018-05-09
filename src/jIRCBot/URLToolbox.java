@@ -37,10 +37,14 @@ public class URLToolbox {
 			String parsedURL = m.group(1);
 			InputStream response = null;
 			
+    		// Remove stale URL entries
+    		toolbox.removeOldUrls(parsedURL);
+			
+    		// Get cached URL
 	    	String[] cachedUrl = toolbox.getUrl(parsedURL);
 	    	
 	    	if (cachedUrl[0] == null) {
-			
+	    		
 			    try {
 	    	
 		    		
@@ -150,7 +154,7 @@ public class URLToolbox {
     }
     
     public String[] getUrl(String url) {
-    	String sql = "SELECT * FROM url WHERE url = ? AND timestamp >= datetime('now', '-6 hours') AND timestamp < datetime('now') LIMIT 1;"; 	
+    	String sql = "SELECT url, title, timestamp FROM url WHERE url = ? AND timestamp >= datetime('now', '-6 hours') AND timestamp < datetime('now') LIMIT 1;"; 	
         try (Connection conn = this.connect();
                 PreparedStatement pstmt  = conn.prepareStatement(sql)){
                pstmt.setString(1,url);
@@ -172,6 +176,17 @@ public class URLToolbox {
         String[] result = {null,null};
         return result;
         
+    }
+    
+    public void removeOldUrls(String url) {
+    	String sql = "DELETE FROM url WHERE url = ? AND timestamp < datetime('now', '-6 hours')";
+        try (Connection conn = this.connect();
+                PreparedStatement pstmt  = conn.prepareStatement(sql)){
+               pstmt.setString(1,url);
+               pstmt.executeUpdate();               
+        } catch (SQLException e) {
+        	System.out.println(e.getMessage());
+        }
     }
 	
 }
