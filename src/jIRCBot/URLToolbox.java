@@ -46,7 +46,6 @@ public class URLToolbox {
 	    	if (cachedUrl[0] == null) {
 	    		
 			    try {
-	    	
 		    		
 			    	response = new URL(parsedURL).openStream();
 			        Scanner scanner = new Scanner(response);
