@@ -25,7 +25,7 @@ public class Knowledge {
 	 * Learn a new topic
 	 */
 	public static String learn(String message, String user) {
-		Pattern pattern = Pattern.compile("!(\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
+		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
 		Matcher m = pattern.matcher(message);
 		if (m.matches()) {
 			
@@ -64,7 +64,7 @@ public class Knowledge {
 	 * Forget a topic
 	 */
 	public static String forget(String message, String user) {
-		Pattern pattern = Pattern.compile("!(\\b\\w+?\\b)\\s(\\b\\w+?\\b)");
+		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
 		if (m.matches()) {
 			String topic = m.group(2);
@@ -92,7 +92,7 @@ public class Knowledge {
 	 * Query a topic
 	 */
 	public static String query(String message) {
-		Pattern pattern = Pattern.compile("\\?(\\b\\w+?\\b)");
+		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
 		if (m.matches()) {
 			

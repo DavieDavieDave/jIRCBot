@@ -15,14 +15,8 @@ public class jIRCBot extends ListenerAdapter {
         @Override
         public void onGenericMessage(GenericMessageEvent event) {
      	
-        	// Ask the 8-ball
-            if (event.getMessage().startsWith("!8ball")) {
-                event.respondWith(EightBall.askTheBall());
-            // Ask the BOFH
-            } else if (event.getMessage().startsWith("!bofh")) {
-            	event.respondWith(BOFH.askTheBOFH());
-            // Learn a topic
-            } else if (event.getMessage().startsWith("!learn")) {
+        	// Learn a topic
+            if (event.getMessage().startsWith("!learn")) {
             	String message = event.getMessage().toString();
             	String user = event.getUser().getNick().toString();
             	event.respondWith(Knowledge.learn(message, user));
@@ -42,6 +36,14 @@ public class jIRCBot extends ListenerAdapter {
             	if (urlTitle != null) {
             		event.respondWith("^ " + urlTitle);
             	}
+            // Ask the 8-ball
+            } if (event.getMessage().startsWith("!8ball")) {
+                event.respondWith(Toys.EightBall());
+            // Ask the BOFH
+            } else if (event.getMessage().startsWith("!bofh")) {
+            	event.respondWith(Toys.BOFH());
+            } else if (event.getMessage().startsWith("!flipcoin")) {
+            	event.respondWith(Toys.FlipCoin());
             // Gracefully quit if requested by bot owner
             } else if (event.getMessage().startsWith("!quit")) {
             	String user = event.getUser().getNick().toString();
