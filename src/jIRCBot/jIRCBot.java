@@ -67,7 +67,7 @@ public class jIRCBot extends ListenerAdapter {
          */
         public static void main(String[] args) throws Exception {
         	
-        	// Prepare the database
+        	// Prepare the knowledge database
         	Knowledge kb = new Knowledge();
         	kb.createKnowledgeDB();
         	kb.createKnowledgeTable();

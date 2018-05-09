@@ -136,7 +136,7 @@ public class Knowledge {
     	if (!f.exists()) {
 	        try (Connection conn = connect()) {
 	            if (conn != null) {
-	                System.out.println("A new database has been created.");
+	                System.out.println("A new knowledge database has been created: " + f);
 	            }
 	 
 	        } catch (SQLException e) {
