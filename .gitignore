@@ -2,3 +2,4 @@
 /target/
 knowledge.db
 config.properties
+/url.db
