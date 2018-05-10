@@ -16,57 +16,78 @@ public class jIRCBot extends ListenerAdapter {
 	@Override
 	public void onGenericMessage(GenericMessageEvent event) throws ConfigurationException {
 
-	// Global configuration
-	Global global = Global.getInstance();
+		// Global configuration
+		Global global = Global.getInstance();
+	
+		PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+	
+		// Reload properties
+		properties.reload();
+	
+		// Learn a topic
+		if (event.getMessage().startsWith("!learn")) {
+			
+			String message = event.getMessage().toString();
+			String user = event.getUser().getNick().toString();
+			event.respondWith(Knowledge.learn(message, user));
+			
+		// Forget a topic
+		} else if (event.getMessage().startsWith("!forget")) {
+			
+			String message = event.getMessage().toString();
+			String user = event.getUser().getNick().toString();
+			event.respondWith(Knowledge.forget(message, user));
+			
+		// Query a topic
+		} else if (event.getMessage().startsWith("?")) {
+			
+			String message = event.getMessage().toString();
+			event.respondWith(Knowledge.query(message));
+			
+		// Return the title of a URL
+		} else if (event.getMessage().contains("http")) {
+			
+			String message = event.getMessage().toString();
+			String urlTitle = URLToolbox.getURLTitle(message);
+			Boolean showTitles = Boolean.parseBoolean(properties.getString("botURLTitles"));
+			
+			if (showTitles && (urlTitle != null)) {
 
-	PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+				event.respondWith("^ " + urlTitle);
 
-	// Reload properties
-	properties.reload();
+			}
+			
+		// 8-ball
+		} if (event.getMessage().startsWith("!8ball")) {
+			
+			event.respondWith(Toys.EightBall());
 
-	// Learn a topic
-	if (event.getMessage().startsWith("!learn")) {
-		String message = event.getMessage().toString();
-		String user = event.getUser().getNick().toString();
-		event.respondWith(Knowledge.learn(message, user));
-	// Forget a topic
-	} else if (event.getMessage().startsWith("!forget")) {
-		String message = event.getMessage().toString();
-		String user = event.getUser().getNick().toString();
-		event.respondWith(Knowledge.forget(message, user));
-	// Query a topic
-	} else if (event.getMessage().startsWith("?")) {
-		String message = event.getMessage().toString();
-		event.respondWith(Knowledge.query(message));
-	// Return the title of a URL
-	} else if (event.getMessage().contains("http")) {
-		String message = event.getMessage().toString();
-		String urlTitle = URLToolbox.getURLTitle(message);
-		Boolean showTitles = Boolean.parseBoolean(properties.getString("botURLTitles"));
-		if (showTitles && (urlTitle != null)) {
-			event.respondWith("^ " + urlTitle);
-	}
-	// 8-ball
-	} if (event.getMessage().startsWith("!8ball")) {
-		event.respondWith(Toys.EightBall());
-	// BOFH
-	} else if (event.getMessage().startsWith("!bofh")) {
-		event.respondWith(Toys.BOFH());
-	// Flip coin
-	} else if (event.getMessage().startsWith("!flipcoin")) {
-		event.respondWith(Toys.FlipCoin());
-	// Quit
-	} else if (event.getMessage().startsWith("!quit")) {
-		String user = event.getUser().getNick().toString();
-		String owner = Owner.getOwner().toString();
-		if (Objects.equals(user, owner)) {
-			event.getBot().stopBotReconnect();
-			event.getBot().sendIRC().quitServer();
+		// BOFH
+		} else if (event.getMessage().startsWith("!bofh")) {
+			
+			event.respondWith(Toys.BOFH());
+
+		// Flip coin
+		} else if (event.getMessage().startsWith("!flipcoin")) {
+			
+			event.respondWith(Toys.FlipCoin());
+
+		// Quit
+		} else if (event.getMessage().startsWith("!quit")) {
+			
+			String user = event.getUser().getNick().toString();
+			String owner = Owner.getOwner().toString();
+			
+			if (Objects.equals(user, owner)) {
+				
+				event.getBot().stopBotReconnect();
+				event.getBot().sendIRC().quitServer();
+				
+			}
+
 		}
-
+	
 	}
-
-}
         
 	/*
 	* jIRCBot
