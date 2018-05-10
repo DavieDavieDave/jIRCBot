@@ -12,7 +12,10 @@ public class BadWords {
 	 */
 	public boolean badWords(String line) {
 		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
+			
+			Global global = Global.getInstance();
+			
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
 			
 			// Reload properties
 			properties.reload();

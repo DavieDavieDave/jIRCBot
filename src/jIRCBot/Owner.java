@@ -4,15 +4,14 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class Owner {
-
-	static String botConfig = "config.properties";
 	
 	/*
 	 * Get the bot owner
 	 */
 	public static String getOwner() {
 		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration(botConfig);
+			Global global = Global.getInstance();
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
 			String botOwner = properties.getString("botOwner");
 			return botOwner;
 		} catch (ConfigurationException e) {
@@ -26,7 +25,8 @@ public class Owner {
 	 */
 	public static void setOwner(String user, String password) {
 		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration(botConfig);
+			Global global = Global.getInstance();
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
 			properties.setProperty("botOwner", user);
 			properties.setProperty("botOwnerPassword", password);
 			properties.save();

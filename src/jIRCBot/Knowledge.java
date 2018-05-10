@@ -114,9 +114,11 @@ public class Knowledge {
 	 * SQLite DB connection
 	 */
     private Connection connect() {
-    	   	
+    	
+    	Global global = Global.getInstance();
+    	
         // SQLite connection string
-        String url = "jdbc:sqlite:" + GlobalVars.knowledgeDB;
+        String url = "jdbc:sqlite:" + global.knowledgeDB;
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -131,7 +133,9 @@ public class Knowledge {
 	 */
     public void createKnowledgeDB() {
     	
-    	File f = new File(GlobalVars.knowledgeDB);
+    	Global global = Global.getInstance();
+    	
+    	File f = new File(global.knowledgeDB);
     	
     	if (!f.exists()) {
 	        try (Connection conn = connect()) {
@@ -237,7 +241,10 @@ public class Knowledge {
      */
     public boolean botUser(String user) {
 		try {
-			PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
+			
+			Global global = Global.getInstance();
+			
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
 			
 			// Reload properties
 			properties.reload();

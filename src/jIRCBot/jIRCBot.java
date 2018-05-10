@@ -16,7 +16,10 @@ public class jIRCBot extends ListenerAdapter {
         @Override
         public void onGenericMessage(GenericMessageEvent event) throws ConfigurationException {
      	
-        	PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
+        	// Global configuration
+        	Global global = Global.getInstance();
+        	
+        	PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
         	
         	// Reload properties
         	properties.reload();
@@ -74,7 +77,10 @@ public class jIRCBot extends ListenerAdapter {
 
         	// Read in configuration and start the bot
         	try {
-        		PropertiesConfiguration properties = new PropertiesConfiguration(GlobalVars.config);
+        		
+        		Global global = Global.getInstance();
+        		
+        		PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
         		String ircName			= properties.getString("ircName");
         		String ircLogin			= properties.getString("ircLogin");
         		String ircRealName		= properties.getString("ircRealName");

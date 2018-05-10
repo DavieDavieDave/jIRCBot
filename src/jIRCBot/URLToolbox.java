@@ -91,8 +91,10 @@ public class URLToolbox {
 	
     private Connection connect() {
 	   	
+    	Global global = Global.getInstance();
+    	
         // SQLite connection string
-        String url = "jdbc:sqlite:" + GlobalVars.urlDB;
+        String url = "jdbc:sqlite:" + global.urlDB;
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(url);
@@ -104,7 +106,9 @@ public class URLToolbox {
     
     public void createUrlDB() {
     	
-    	File f = new File(GlobalVars.urlDB);
+    	Global global = Global.getInstance();
+    	
+    	File f = new File(global.urlDB);
     	
     	if (!f.exists()) {
 	        try (Connection conn = connect()) {
