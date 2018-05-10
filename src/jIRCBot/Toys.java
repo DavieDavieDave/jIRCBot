@@ -31,13 +31,13 @@ public class Toys {
 				"Outlook not so good",
 				"Very doubtful"
 		};
-		
+
 		Random rand = new Random();
-		
+
 		int randomNumber = rand.nextInt(eightBall.length);
-		
+
 		return eightBall[randomNumber];
-		
+
 	}
 	
 	/*
@@ -49,15 +49,15 @@ public class Toys {
 				"heads",
 				"tails"
 		};
-		
+
 		Random rand = new Random();
-		
+
 		int randomNumber = rand.nextInt(coin.length);
-		
+
 		String answer = "It's " + coin[randomNumber];
-		
+
 		return answer;
-		
+
 	}
 	
 	/*
