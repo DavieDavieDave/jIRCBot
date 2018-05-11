@@ -110,7 +110,7 @@ public class jIRCBot extends ListenerAdapter {
 			String ircRealName		= properties.getString("ircRealName");
 			String ircServer		= properties.getString("ircServer");
 			String ircSASLPassword	= properties.getString("ircSASLPassword");
-			int ircPort			= properties.getInt("ircPort");
+			int ircPort				= properties.getInt("ircPort");
         		
 			String[] ircChannels = properties.getString("ircChannels").split("\\|");
         		
