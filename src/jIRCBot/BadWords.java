@@ -24,17 +24,9 @@ public class BadWords {
 			String[] wordList = line.toLowerCase().split("\\s+");
 			
 			for (String word : wordList) {
-				
-				if(Arrays.asList(badWords).contains(word)) {
-					
-					return true;
-					
-				} else {
-					
-					return false;
-					
-				}
-				
+
+				return Arrays.asList(badWords).contains(word);
+
 			}
 			
 		} catch (ConfigurationException e) {
