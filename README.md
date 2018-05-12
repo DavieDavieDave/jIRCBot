@@ -63,7 +63,7 @@ Example:
         <jIRCBot> It's heads
 
 # Know user commands
-Commands known IRC users can use.
+Commands known IRC users can use. Users can be added and removed using the `!adduser` and `!deluser` owner commands.
 
 ### Add knowledge
 
