@@ -39,7 +39,7 @@ public class URLToolbox {
 
 			InputStream response = null;
 
-			toolbox.removeOldUrls(parsedURL);
+			toolbox.removeCachedUrl(parsedURL);
 
 			String[] cachedUrl = toolbox.getUrl(parsedURL);
 
@@ -229,7 +229,7 @@ public class URLToolbox {
 	/*
 	 * Remove old data
 	 */
-	public void removeOldUrls(String url) {
+	public void removeCachedUrl(String url) {
 
 		String sql = "DELETE FROM url WHERE url = ? AND timestamp < datetime('now', '-6 hours')";
 
