@@ -105,17 +105,14 @@ public class URLToolbox {
 	private Connection connect() {
 
 		Global global = Global.getInstance();
+		
 		String url = "jdbc:sqlite:" + global.urlDB;
 		Connection conn = null;
 		
 		try {
-			
 			conn = DriverManager.getConnection(url);
-			
 		} catch (SQLException e) {
-			
 			System.out.println(e.getMessage());
-			
 		}
 		
 		return conn;
@@ -131,21 +128,13 @@ public class URLToolbox {
 		File f = new File(global.urlDB);
 
 		if (!f.exists()) {
-			
 			try (Connection conn = connect()) {
-				
 				if (conn != null) {
-					
 					System.err.println("A new URL database has been created: " + f);
-					
 				}
-
 			} catch (SQLException e) {
-				
 				System.out.println(e.getMessage());
-				
 			}
-			
 		}
 
 	}

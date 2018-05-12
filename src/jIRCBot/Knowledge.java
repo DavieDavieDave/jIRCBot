@@ -153,13 +153,9 @@ public class Knowledge {
 		Connection conn = null;
 
 		try {
-
 			conn = DriverManager.getConnection(url);
-
 		} catch (SQLException e) {
-
 			System.out.println(e.getMessage());
-
 		}
 
 		return conn;
@@ -176,21 +172,13 @@ public class Knowledge {
     	File f = new File(global.knowledgeDB);
 
     	if (!f.exists()) {
-
     		try (Connection conn = connect()) {
-
     			if (conn != null) {
-
     				System.out.println("A new knowledge database has been created: " + f);
-
     			}
-
     		} catch (SQLException e) {
-
     			System.out.println(e.getMessage());
-
     		}
-
     	}
 
 	}
@@ -320,19 +308,14 @@ public class Knowledge {
 			Global global = Global.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-
 			properties.reload();
 			
 			String[] botUsers = properties.getString("botUsers").split("\\|");
 
 			if (Arrays.asList(botUsers).contains(user)) {
-
 				return true;
-
 			} else {
-
 				return false;
-
 			}
 
 		} catch (ConfigurationException e) {
