@@ -18,7 +18,7 @@ public class Knowledge {
 	/*
 	 * Learn a new topic
 	 */
-	public static String learn(String message, String user) {
+	public static String learn(String message, String user) throws ConfigurationException {
 		
 		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
 		Matcher m = pattern.matcher(message);
@@ -32,34 +32,22 @@ public class Knowledge {
 			BadWords bw = new BadWords();
 
 			if (kb.botUser(user)) {
-
 				if (!bw.badWords(topic) && !bw.badWords(data)) {
-	    		
 					if (kb.getKnowledge(topic)[0] != null) {
-						
 						String answer = "I already known about " + topic + ".";
 						return answer;
-						
 					} else {
-						
 						kb.addKnowledge(topic, user, data);
 						String answer = "OK " + user + ", I now know about " + topic + ".";
 						return answer;
-						
 					}
-					
 				} else {
-
 					String answer = "Sorry " + user + ", but I'm not allowed to learn about that.";
 					return answer;
-
 				}
-
 			} else {
-
 				String answer = "Sorry " + user + ", you're not allowed to do that.";
 				return answer;
-
 			}
 
 		}
@@ -71,7 +59,7 @@ public class Knowledge {
 	/*
 	 * Forget a topic
 	 */
-	public static String forget(String message, String user) {
+	public static String forget(String message, String user) throws ConfigurationException {
 		
 		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
@@ -82,27 +70,19 @@ public class Knowledge {
 			Knowledge kb = new Knowledge();
 
 			if (kb.botUser(user)) {
-
 				if (kb.getKnowledge(topic)[0] != null) {
-
 					kb.deleteKnowledge(topic);
 					String answer = "OK " + user + ", I forgot about " + topic + ".";
 					return answer;
-
 				} else {
-
 					String answer = "Sorry, I don't know about " + topic + ".";
 					return answer;
-
 				}
-
 			} else {
-
 				String answer = "Sorry " + user + ", you're not allowed to do that.";
 				return answer;
-
 			}
-
+			
 		} 
 
 		return "Sorry, I don't understand!";
@@ -111,7 +91,7 @@ public class Knowledge {
 	/*
 	 * Query a topic
 	 */
-	public static String query(String message) {
+	public static String query(String message) throws ConfigurationException {
 
 		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)");
 		Matcher m = pattern.matcher(message);
@@ -124,15 +104,11 @@ public class Knowledge {
 			String result[] = kb.getKnowledge(topic);
 
 			if (result[0] != null) {
-
 				String answer = "Here's what I know about " + topic + ": " + result[1];
 				return answer;
-
 			} else {
-
 				String answer = "Sorry, but I don't know about " + topic;
 				return answer;
-
 			}
 
 		}
@@ -144,7 +120,7 @@ public class Knowledge {
 	/*
 	 * Database connection
 	 */
-	private Connection connect() {
+	private Connection connect() throws ConfigurationException {
 
 		Global global = Global.getInstance();
 
@@ -165,7 +141,7 @@ public class Knowledge {
 	/*
 	 * Create knowledge database
 	 */
-    public void createKnowledgeDB() {
+    public void createKnowledgeDB() throws ConfigurationException {
 
     	Global global = Global.getInstance();
 
@@ -186,7 +162,7 @@ public class Knowledge {
 	/*
 	 * Create knowledge table
 	 */
-	public void createKnowledgeTable() {
+	public void createKnowledgeTable() throws ConfigurationException {
 
 		String sql = "CREATE TABLE IF NOT EXISTS knowledge (\n"
 				+ " id integer PRIMARY KEY,\n"
@@ -212,7 +188,7 @@ public class Knowledge {
 	/*
 	 * Add knowledge
 	 */
-	public void addKnowledge(String topic, String author, String data) {
+	public void addKnowledge(String topic, String author, String data) throws ConfigurationException {
 
 		if (this.getKnowledge(topic)[0] == null) {
 
@@ -239,7 +215,7 @@ public class Knowledge {
 	/*
 	 * Delete knowledge
 	 */
-	public void deleteKnowledge(String topic) {
+	public void deleteKnowledge(String topic) throws ConfigurationException {
 
 		String sql = "DELETE FROM knowledge WHERE topic = ?";
 
@@ -264,7 +240,7 @@ public class Knowledge {
 	/*
 	 * Query knowledge
 	 */
-	public String[] getKnowledge(String topic) {
+	public String[] getKnowledge(String topic) throws ConfigurationException {
 
 		String sql = "SELECT topic, data FROM knowledge WHERE topic = ? LIMIT 1;";
 
@@ -276,14 +252,11 @@ public class Knowledge {
 			ResultSet rs  = pstmt.executeQuery();
                            
 			while (rs.next()) {
-
 				String[] result = {
 						rs.getString("topic"),
 						rs.getString("data"),
 				};
-
 				return result;
-
 			}
 
 		} catch (SQLException e) {
@@ -308,11 +281,10 @@ public class Knowledge {
 			Global global = Global.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			properties.setListDelimiter('\u002C');
 			properties.reload();
-			
-			String[] botUsers = properties.getString("botUsers").split("\\|");
 
-			if (Arrays.asList(botUsers).contains(user)) {
+			if (Arrays.asList(properties.getStringArray("botUsers")).contains(user)) {
 				return true;
 			} else {
 				return false;

@@ -13,15 +13,18 @@ Create a config.properties file with the following:
     ircSASLPassword=NickServPassword
     ircServer=irc.freenode.net
     ircPort=6697
-    ircChannels=###jircbot-test|###jircbot-test2
+    ircChannels=#firstchannel,#secondchannel
     botOwner=nickname
+    botOwnerMask=nickname!username@host
     botOwnerPassword=
-    botUsers=nickname1|nickname2
-    badWords=bad|words|go|here
+    botUsers=nickname1,nickname2
+    badWords=bad,words,go,here
+    dbKnowledge=knowledge.db
+    dbUrl=url.db
 
-The properties `ircChannels` and `botUsers` are delimited by `|`.
+The properties `ircChannels` and `botUsers` are comma delimited.
 
-To set the `botOwnerPassword`, send a private message with `!setpass <password>`. Make sure you set the `botOwner` property to your nickname before starting the bot.
+To set the `botOwnerPassword`, send a private message with `setpass <password>`. Make sure you set the `botOwner` and `botOwnerMask` property when running the bot for the first time.
 
 # Basic commands
 Command all IRC users may use.
@@ -86,76 +89,26 @@ Example:
 # Bot owner commands
 Bot owner commands only work via PRIVMSG and always requires the first argument to be the owner password.
 
+### Authenticate
+
+    auth <password>
+
 ### Set owner password
 
-    !setpass <password>
+    setpass <password>
     
-Example:
-
-    <exampleUser> !setpass password
-        <jIRCBot> Password set
-
 ### Add a user
 
-    !adduser <password> <user>
-    
-Example:
-
-    <exampleUser> !adduser password testuser
-        <jIRCBot> Added user testuser
-    
+    adduser <user>
+      
 ### Delete a user
 
-    !deluser <password> <user>
-    
-Example:
-
-    <exampleUser> !deluser password testuser
-        <jIRCBot> Deleted user testuser
+    deluser <user>
     
 ### List users
 
-    !listusers <password>
-    
-Example:
-
-    <exampleUser> !listusers password
-        <jIRCBot> Users: exampleUser, testuser
-    
-### Add bad word
-
-    !addword <password> <word>
-    
-Example:
-
-    <exampleUser> !addword password badword
-        <jIRCBot> Added bad word: badword
- 
-### Delete bad word
-
-    !delword <password> <word>
-    
-Example:
-
-    <exampleUser> !delword password badword
-        <jIRCBot> Deleted bad word: badword
+    listusers
     
 ### List bad words
 
-    !listwords <password>
-    
-Example:
-
-    <exampleUser> !listwords password
-        <jIRCBot> Bad words: ugly, bald, silly, badword
-    
-### Quit
-
-    !quit <password>
-
-Example:
-
-    <exampleUser> !quit password
-        <jIRCBot> Quitting
-              <-- jIRCBot (~jIRCBot@example.net) has quit
-    
+    listwords

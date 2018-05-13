@@ -9,117 +9,127 @@ import org.mindrot.jbcrypt.*;
 
 public class Owner {
 	
-	/*
-	 * Get the bot owner
-	 */
-	public static String getOwner() throws ConfigurationException {
+	private static Owner instance = null;
+	
+	public String botOwner;
+	public String botOwnerMask;
+	public String botOwnerPassword;
+	public String[] botUsers;
+	
+	private Owner() throws ConfigurationException {
+		
+		Global global = Global.getInstance();
 		
 		try {
-			
-			Global global = Global.getInstance();
+
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-			String botOwner = properties.getString("botOwner");
-			return botOwner;
+			properties.setListDelimiter('\u002C');
+			properties.reload();
+			
+			botOwner			= properties.getString("botOwner");
+			botOwnerMask		= properties.getString("botOwnerMask");
+			botOwnerPassword	= properties.getString("botOwnerPassword");
+			botUsers			= properties.getStringArray("botUsers");
 			
 		} catch (ConfigurationException e) {
-			
 			System.out.print(e.getMessage());
-			
 		}
-		
-		return null;
 		
 	}
-
+	
+	public static Owner getInstance() throws ConfigurationException {
+		
+		if (instance == null)
+			instance = new Owner();
+		
+		return instance;
+		
+	}
+	
 	/*
-	 * Set the bot owner
+	 * Authenticate the owner
 	 */
-	public static Boolean setPassword(String user, String password) {
+	public Boolean authenticateOwner(String user, String password, String mask) throws ConfigurationException {
 		
-		try {
-			
-			Global global = Global.getInstance();
-			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-			
-			String bcryptPassword = BCrypt.hashpw(password, BCrypt.gensalt());
-
-			String botOwner = properties.getString("botOwner");
-
-			if (user.equals(botOwner)) {
-			
-				properties.setProperty("botOwnerPassword", bcryptPassword);
-				properties.save();
-				
-				return true;
-				
-			} else {
-				
-				return false;
-			}
-						
-		} catch (ConfigurationException e) {
-			
-			System.out.print(e.getMessage());
-			
+		Global global = Global.getInstance();
+		Owner owner = Owner.getInstance();
+		
+		PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+		
+		if (user.equals(owner.botOwner) && BCrypt.checkpw(password, owner.botOwnerPassword)) {
+			properties.setProperty("botOwnerMask", mask);
+			properties.save();
+			return true;
 		}
-		
+
 		return false;
 		
 	}
-
+	
 	/*
-	 * Authenticate the bot owner
+	 * Verify owner
 	 */
-	public static Boolean authenticateOwner(String user, String password) {
-
-		try {
+	public Boolean isOwner(String user, String mask) throws ConfigurationException {
 		
-			Global global = Global.getInstance();
-			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-			
-			String botOwner = properties.getString("botOwner");
-			String botOwnerPassword = properties.getString("botOwnerPassword");
-			
-			if (user.equals(botOwner) && BCrypt.checkpw(password, botOwnerPassword)) {
-				return true;
-			} else {
-				return false;
-			}
-		
-		} catch (ConfigurationException e) {
-			
-			System.out.print(e.getMessage());
-			
-		}
+		Owner owner = Owner.getInstance();
+		if (user.equals(owner.botOwner) && mask.equals(owner.botOwnerMask))
+			return true;
 		
 		return false;
 		
 	}
 	
+	/*
+	 * Set owner password
+	 */
+	public Boolean setPassword(String user, String password, String mask) {
+		
+		try {
+			
+			Global global = Global.getInstance();
+			Owner owner = Owner.getInstance();
+			
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			
+			if (user.equals(owner.botOwner) && mask.equals(owner.botOwnerMask)) {
+				String bcryptPassword = BCrypt.hashpw(password, BCrypt.gensalt());
+				properties.setProperty("botOwnerPassword", bcryptPassword);
+				properties.save();
+				return true;
+			} 
+						
+		} catch (ConfigurationException e) {
+			System.out.print(e.getMessage());
+		}
+		
+		return false;
+		
+	}
+
+
 	/*
 	 * Add a user
 	 */
-	public static Boolean addUser(String user) {
+	public Boolean addUser(String user) {
 		
 		try {
+			
 			Global global = Global.getInstance();
+			Owner owner = Owner.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-			properties.reload();
 			
-			String[] botUsers = properties.getString("botUsers").split("\\|");
+			if (!Arrays.asList(owner.botUsers).contains(user)) {
 
-			if (!Arrays.asList(botUsers).contains(user)) {
-
-				String[] tempArray = new String[ botUsers.length + 1 ];
-				for (int i=0; i<botUsers.length; i++)
+				String[] tempArray = new String[ owner.botUsers.length + 1 ];
+				for (int i=0; i<owner.botUsers.length; i++)
 				{
-				    tempArray[i] = botUsers[i];
+				    tempArray[i] = owner.botUsers[i];
 				}
-				tempArray[botUsers.length] = user;
-				botUsers = tempArray;   
+				tempArray[owner.botUsers.length] = user;
+				owner.botUsers = tempArray;   
 	
-				String newBotUsers = String.join("|", botUsers);
+				String newBotUsers = String.join(",", owner.botUsers);
 				
 				properties.setProperty("botUsers", newBotUsers);
 				properties.save();
@@ -144,22 +154,20 @@ public class Owner {
 	/*
 	 * Delete a user
 	 */
-	public static Boolean delUser(String user) {
+	public Boolean delUser(String user) {
 		
 		try {
 			
 			Global global = Global.getInstance();
+			Owner owner = Owner.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-			properties.reload();
 			
-			String[] botUsers = properties.getString("botUsers").split("\\|");
+			if (Arrays.asList(owner.botUsers).contains(user)) {
 			
-			if (Arrays.asList(botUsers).contains(user)) {
-			
-				botUsers = (String[]) ArrayUtils.removeElement(botUsers, user);
+				owner.botUsers = (String[]) ArrayUtils.removeElement(owner.botUsers, user);
 				
-				String newBotUsers = String.join("|", botUsers);
+				String newBotUsers = String.join(",", owner.botUsers);
 				
 				properties.setProperty("botUsers", newBotUsers);
 				properties.save();
@@ -184,24 +192,11 @@ public class Owner {
 	/*
 	 * List users
 	 */
-	public static String listUsers() {
+	public String listUsers() throws ConfigurationException {
 		
-		try {
-			
-			Global global = Global.getInstance();
+		Owner owner = Owner.getInstance();
+		return String.join(", ", owner.botUsers);
 
-			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-			properties.reload();
-				
-			return properties.getString("botUsers").replaceAll("\\|", ", ");
-			
-		} catch (ConfigurationException e) {
-			
-			System.out.print(e.getMessage());
-			
-		}
-		
-		return null;
 	}
 	
 }

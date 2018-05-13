@@ -15,6 +15,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.StringEscapeUtils;
 
 public class URLToolbox {
@@ -22,7 +23,7 @@ public class URLToolbox {
 	/*
 	 * Return the <TITLE> of the URL provided
 	 */
-	public static String getURLTitle(String url) {
+	public static String getURLTitle(String url) throws ConfigurationException {
 
 		URLToolbox toolbox = new URLToolbox();
 
@@ -61,14 +62,10 @@ public class URLToolbox {
 					BadWords bw = new BadWords();
 
 					if (!bw.badWords(title)) {
-						
 						toolbox.addUrl(parsedURL, title);
 						return title;
-						
 					} else {
-						
 						return null;
-						
 					}
 
 				} catch (IOException ex) {
@@ -78,11 +75,8 @@ public class URLToolbox {
 				} finally {
 
 					try {
-						
 						response.close();
-						
 					} catch (IOException ex) {
-						
 						ex.printStackTrace();
 					}
 
@@ -102,7 +96,7 @@ public class URLToolbox {
 	/* 
 	 * Database connection
 	 */
-	private Connection connect() {
+	private Connection connect() throws ConfigurationException {
 
 		Global global = Global.getInstance();
 		
@@ -121,7 +115,7 @@ public class URLToolbox {
 	/*
 	 * Create database
 	 */
-	public void createUrlDB() {
+	public void createUrlDB() throws ConfigurationException {
 
 		Global global = Global.getInstance();
 
@@ -142,7 +136,7 @@ public class URLToolbox {
 	/*
 	 * Create table
 	 */
-	public void createUrlTable() {
+	public void createUrlTable() throws ConfigurationException {
 
 		String sql = "CREATE TABLE IF NOT EXISTS url (\n"
 				+ " id integer PRIMARY KEY,\n"
@@ -167,7 +161,7 @@ public class URLToolbox {
 	/*
 	 * Add a URL
 	 */
-	public void addUrl(String url, String title) {
+	public void addUrl(String url, String title) throws ConfigurationException {
 
 		if (this.getUrl(url)[0] == null) {
 
@@ -193,7 +187,7 @@ public class URLToolbox {
 	/*
 	 * Remove a URL
 	 */
-	public String[] getUrl(String url) {
+	public String[] getUrl(String url) throws ConfigurationException {
 
 		String sql = "SELECT url, title, timestamp FROM url WHERE url = ? AND timestamp >= datetime('now', '-6 hours') AND timestamp < datetime('now') LIMIT 1;";
 
@@ -229,7 +223,7 @@ public class URLToolbox {
 	/*
 	 * Remove old data
 	 */
-	public void removeCachedUrl(String url) {
+	public void removeCachedUrl(String url) throws ConfigurationException {
 
 		String sql = "DELETE FROM url WHERE url = ? AND timestamp < datetime('now', '-6 hours')";
 

@@ -18,16 +18,14 @@ public class BadWords {
 			Global global = Global.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
-
+			properties.setListDelimiter('\u002C');
 			properties.reload();
 
-			String[] badWords = properties.getString("badWords").toLowerCase().split("\\|");
+			String[] badWords = properties.getStringArray("badWords");
 			String[] wordList = line.toLowerCase().split("\\s+");
 			
 			for (String word : wordList) {
-
 				return Arrays.asList(badWords).contains(word);
-
 			}
 			
 		} catch (ConfigurationException e) {
@@ -49,21 +47,22 @@ public class BadWords {
 			Global global = Global.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			properties.setListDelimiter('\u002C');
 			properties.reload();
 			
-			String[] badWords = properties.getString("badWords").split("\\|");
+			String[] badWords = properties.getStringArray("badWords");
 
-			if (!Arrays.asList(badWords).contains(word)) {
+			if (!Arrays.asList(badWords).contains(word.toLowerCase())) {
 
 				String[] tempArray = new String[ badWords.length + 1 ];
 				for (int i=0; i<badWords.length; i++)
 				{
 				    tempArray[i] = badWords[i];
 				}
-				tempArray[badWords.length] = word;
+				tempArray[badWords.length] = word.toLowerCase();
 				badWords = tempArray;   
 	
-				String newBadWords = String.join("|", badWords);
+				String newBadWords = String.join(",", badWords);
 				
 				properties.setProperty("badWords", newBadWords);
 				properties.save();
@@ -96,15 +95,16 @@ public class BadWords {
 			Global global = Global.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			properties.setListDelimiter('\u002C');
 			properties.reload();
 
-			String[] badWords = properties.getString("badWords").split("\\|");
+			String[] badWords = properties.getStringArray("badWords");
 
-			if (Arrays.asList(badWords).contains(word)) {
+			if (Arrays.asList(badWords).contains(word.toLowerCase())) {
 
-				badWords = (String[]) ArrayUtils.removeElement(badWords, word);
+				badWords = (String[]) ArrayUtils.removeElement(badWords, word.toLowerCase());
 				
-				String newBadWords = String.join("|", badWords);
+				String newBadWords = String.join(",", badWords);
 				
 				properties.setProperty("badWords", newBadWords);
 				properties.save();
@@ -137,9 +137,12 @@ public class BadWords {
 			Global global = Global.getInstance();
 
 			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			properties.setListDelimiter('\u002C');
 			properties.reload();
 
-			return properties.getString("badWords").replaceAll("\\|", ", ");
+			String[] badWords = properties.getStringArray("badWords");
+			
+			return String.join(", ", badWords);
 
 		} catch (ConfigurationException e) {
 
