@@ -87,7 +87,7 @@ Example:
         <jIRCBot> OK exampleNick, I forgot about sometopic.
 
 # Bot owner commands
-Bot owner commands only work via PRIVMSG and always requires the first argument to be the owner password.
+Bot owner commands only work via PRIVMSG. The bot onwer must be authenticated to use these commands.
 
 ### Authenticate
 
@@ -108,6 +108,14 @@ Bot owner commands only work via PRIVMSG and always requires the first argument 
 ### List users
 
     listusers
+
+### Add bad word
+
+    addword <word>
+    
+### Delete bad word
+
+    delword <word>
     
 ### List bad words
 

@@ -72,34 +72,54 @@ public class jIRCBot extends ListenerAdapter {
 		
 		String command = event.getMessage();
 		
+		// Authenticate
 		if (command.startsWith("auth")) {
 			String[] args = event.getMessage().split(" ");
 			String password = args[1];
 			if(owner.authenticateOwner(user, password, mask)) {
 				event.respondPrivateMessage("Authenticated");
 			}
+		// Set password
 		} else if (command.startsWith("setpass")) {
 			String[] args = event.getMessage().split(" ");
 			String password = args[1];
 			if(owner.setPassword(user, password, mask)) {
 				event.respondPrivateMessage("Password set");
 			}
+		// Add user
 		} else if (command.startsWith("adduser")) {
 			String[] args = event.getMessage().split(" ");
 			String userToAdd = args[1];
 			if(owner.isOwner(user, mask) && owner.addUser(userToAdd)) {
 				event.respondPrivateMessage("User added");
 			}
+		// Del user
 		} else if (command.startsWith("deluser")) {
 			String[] args = event.getMessage().split(" ");
 			String userToDel = args[1];
 			if(owner.isOwner(user, mask) && owner.delUser(userToDel)) {
 				event.respondPrivateMessage("User deleted");
 			}
+		// List users
 		} else if (command.startsWith("listusers")) {
 			if(owner.isOwner(user, mask)) {
 				event.respondPrivateMessage(owner.listUsers());
 			}
+		// Add bad word
+		} else if (command.startsWith("addword")) {
+			String[] args = event.getMessage().split(" ");
+			String wordToAdd = args[1];
+			if(owner.isOwner(user, mask) && BadWords.addWord(wordToAdd)) {
+				event.respondPrivateMessage("Word added");
+			}
+		// Delete bad word
+		} else if (command.startsWith("delword")) {
+			String[] args = event.getMessage().split(" ");
+			String wordToDel = args[1];
+			if(owner.isOwner(user, mask) && BadWords.delWord(wordToDel)) {
+				event.respondPrivateMessage("Word deleted");
+			}
+		// List bad words
 		} else if (command.startsWith("listwords")) {
 			if(owner.isOwner(user, mask)) {
 				event.respondPrivateMessage(BadWords.listWords());
