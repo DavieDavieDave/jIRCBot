@@ -57,6 +57,7 @@ public class Owner {
 		PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
 		
 		if (user.equals(owner.botOwner) && BCrypt.checkpw(password, owner.botOwnerPassword)) {
+			properties.setProperty("botOwner", user);
 			properties.setProperty("botOwnerMask", mask);
 			properties.save();
 			return true;
