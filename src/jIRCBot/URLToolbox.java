@@ -2,19 +2,14 @@ package jIRCBot;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Scanner;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.StringEscapeUtils;
 
@@ -35,58 +30,29 @@ public class URLToolbox {
 		Matcher m = pattern.matcher(url);
 
 		if (m.matches()) {
-
-			String parsedURL = m.group(1);
-
-			InputStream response = null;
-
+			
+			String parsedURL = m.group(1);;
 			toolbox.removeCachedUrl(parsedURL);
-
 			String[] cachedUrl = toolbox.getUrl(parsedURL);
 
 			if (cachedUrl[0] == null) {
-
 				try {
-
-					response = new URL(parsedURL).openStream();
-
-					Scanner scanner = new Scanner(response);
-
-					String responseBody = scanner.useDelimiter("\\A").next();
-					String urlTitle = (responseBody.substring(responseBody.indexOf("<title>") + 7, responseBody.indexOf("</title>")));
-
-					scanner.close();
-
+					String urlTitle = TitleExtractor.getPageTitle(parsedURL);
 					String title = StringEscapeUtils.unescapeHtml(urlTitle.trim());
-
 					BadWords bw = new BadWords();
-
 					if (!bw.badWords(title)) {
 						toolbox.addUrl(parsedURL, title);
 						return title;
 					} else {
 						return null;
 					}
-
 				} catch (IOException ex) {
-
 					ex.printStackTrace();
-
-				} finally {
-
-					try {
-						response.close();
-					} catch (IOException ex) {
-						ex.printStackTrace();
-					}
-
-				}
-
+				} 
 			} else {
-
 				return cachedUrl[1];
-
 			}
+			
 		}
 
 		return null;
