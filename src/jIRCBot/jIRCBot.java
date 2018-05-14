@@ -122,6 +122,12 @@ public class jIRCBot extends ListenerAdapter {
 			if(Owner.isOwner(user, mask)) {
 				event.respondPrivateMessage(BadWords.listWords());
 			}
+		} else if (command.startsWith("quit")) {
+			if(Owner.isOwner(user, mask)) {
+				event.respondPrivateMessage("Quitting");
+				event.getBot().stopBotReconnect();
+				event.getBot().sendIRC().quitServer();
+			}
 		}
 		
 	}
