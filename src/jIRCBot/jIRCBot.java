@@ -8,6 +8,8 @@ import org.pircbotx.PircBotX;
 import org.pircbotx.UtilSSLSocketFactory;
 import org.pircbotx.cap.SASLCapHandler;
 import org.pircbotx.hooks.ListenerAdapter;
+import org.pircbotx.hooks.events.InviteEvent;
+import org.pircbotx.hooks.events.KickEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
@@ -179,6 +181,23 @@ public class jIRCBot extends ListenerAdapter {
 		// Flip a coin
 		} else if (command.startsWith("!flipcoin")) {
 			event.respondWith(Toys.FlipCoin());
+		}
+		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.pircbotx.hooks.ListenerAdapter#onInvite(org.pircbotx.hooks.events.InviteEvent)
+	 * 
+	 * Join known channel on invite
+	 */
+	@Override
+	public void onInvite(InviteEvent event) throws ConfigurationException {
+		
+		Global global = Global.getInstance();
+		
+		if (Arrays.asList(global.ircChannels).contains(event.getChannel())) {
+			event.getBot().sendIRC().joinChannel(event.getChannel());
 		}
 		
 	}
