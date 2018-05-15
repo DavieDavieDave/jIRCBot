@@ -25,6 +25,7 @@ class Global {
 	public String ircSASLPassword;
 	public String[] ircChannels;
 	public int ircPort;
+	public Boolean ircJoinOnKick;
 	
 	private Global() throws ConfigurationException {
 
@@ -50,6 +51,7 @@ class Global {
 		ircPort			= properties.getInt("ircPort");
 		ircSASLPassword	= properties.getString("ircSASLPassword");
 		ircChannels		= properties.getStringArray("ircChannels");
+		ircJoinOnKick	= Boolean.parseBoolean(properties.getString("ircJoinOnKick"));
 		
 	}
 	

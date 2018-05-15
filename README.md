@@ -14,6 +14,7 @@ Create a config.properties file with the following:
     ircServer=irc.freenode.net
     ircPort=6697
     ircChannels=#firstchannel,#secondchannel
+    ircJoinOnKick=false
     botOwner=nickname
     botOwnerMask=nickname!username@host
     botOwnerPassword=
@@ -120,3 +121,11 @@ Bot owner commands only work via PRIVMSG. The bot onwer must be authenticated to
 ### List bad words
 
     listwords
+    
+### Join a channel
+
+    join #channel
+    
+### Leave a channel
+
+    part #channel

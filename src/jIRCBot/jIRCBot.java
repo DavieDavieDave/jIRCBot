@@ -201,6 +201,23 @@ public class jIRCBot extends ListenerAdapter {
 		}
 		
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.pircbotx.hooks.ListenerAdapter#onKick(org.pircbotx.hooks.events.KickEvent)
+	 * 
+	 * Join known channel when kicked 
+	 */
+	@Override
+	public void onKick(KickEvent event) throws ConfigurationException {
+		
+		Global global = Global.getInstance();
+		
+		if (Arrays.asList(global.ircChannels).contains(event.getChannel().getName()) && global.ircJoinOnKick) {
+			event.getBot().sendIRC().joinChannel(event.getChannel().getName());
+		}
+		
+	}
 
 	/*
 	* jIRCBot
