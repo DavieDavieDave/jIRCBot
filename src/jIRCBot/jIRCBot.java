@@ -122,6 +122,23 @@ public class jIRCBot extends ListenerAdapter {
 			if(Owner.isOwner(user, mask)) {
 				event.respondPrivateMessage(BadWords.listWords());
 			}
+		// Join a channel
+		} else if (command.startsWith("join")) {
+			if(Owner.isOwner(user, mask)) {
+				String[] args = event.getMessage().split(" ");
+				String channel = args[1];
+				event.respondPrivateMessage("Joining channel " + channel);
+				event.getBot().sendIRC().joinChannel(channel);
+			}
+		// Leave a channel
+		} else if (command.startsWith("part")) {
+			if(Owner.isOwner(user, mask)) {
+				String[] args = event.getMessage().split(" ");
+				String channel = args[1];
+				event.respondPrivateMessage("Leaving channel " + channel);
+				event.getBot().sendRaw().rawLine("PART " + channel);
+			}
+		// Terminate bot
 		} else if (command.startsWith("quit")) {
 			if(Owner.isOwner(user, mask)) {
 				event.respondPrivateMessage("Quitting");
