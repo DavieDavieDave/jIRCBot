@@ -43,7 +43,7 @@ public class jIRCBot extends ListenerAdapter {
 			event.respondChannel(Knowledge.forget(command, user));
 		// Display URL title
 		} else if (command.contains("http")) {
-			String url = URLToolbox.getURLTitle(command);
+			String url = URL.getURLTitle(command);
 			if (Boolean.parseBoolean(properties.getString("botURLTitles")) && (url != null) ) {
 				event.respondChannel("^ " + url);
 			}

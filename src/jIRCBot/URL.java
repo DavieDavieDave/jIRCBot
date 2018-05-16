@@ -13,14 +13,14 @@ import java.util.regex.Pattern;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.StringEscapeUtils;
 
-public class URLToolbox {
+public class URL {
 	
 	/*
 	 * Return the <TITLE> of the URL provided
 	 */
 	public static String getURLTitle(String url) throws ConfigurationException {
 
-		URLToolbox toolbox = new URLToolbox();
+		URL toolbox = new URL();
 
 		toolbox.createUrlDB();
 		toolbox.createUrlTable();

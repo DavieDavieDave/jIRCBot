@@ -213,7 +213,7 @@
               <goal>copy-resources</goal>
             </goals>
             <configuration>
-              <outputDirectory>C:\Users\Dave\git\jIRCBot/target/jIRCBot</outputDirectory>
+              <outputDirectory>/target/jIRCBot</outputDirectory>
               <resources>
                 <resource>
                   <directory>resources</directory>
