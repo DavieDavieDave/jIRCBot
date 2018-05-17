@@ -113,7 +113,7 @@ public class Knowledge {
 
 		}
 
-		return "Sorry, I don't understand!";
+		return null;
 
 	}
 		

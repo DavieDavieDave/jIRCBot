@@ -167,7 +167,10 @@ public class jIRCBot extends ListenerAdapter {
 
 		// Query topic
 		if (command.startsWith("?")) {
-			event.respondWith(Knowledge.query(command));
+			String answer = Knowledge.query(command);
+			if (answer != null) {
+				event.respondWith(answer);
+			}
 		// Version
 		} else if (command.startsWith("!version")) {
 			event.respondWith("jIRCBot Version " + global.version);
