@@ -140,7 +140,6 @@ public class jIRCBot extends ListenerAdapter {
 				event.respondPrivateMessage("Leaving channel " + channel);
 				event.getBot().sendRaw().rawLine("PART " + channel);
 			}
-		// Terminate bot
 		} else if (command.startsWith("quit")) {
 			if(Owner.isOwner(user, mask)) {
 				event.respondPrivateMessage("Quitting");

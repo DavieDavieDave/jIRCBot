@@ -104,10 +104,10 @@ public class Knowledge {
 			String result[] = kb.getKnowledge(topic);
 
 			if (result[0] != null) {
-				String answer = "Here's what I know about " + topic + ": " + result[1];
+				String answer = "[" + topic + "] " + result[1];
 				return answer;
 			} else {
-				String answer = "Sorry, but I don't know about " + topic;
+				String answer = "Sorry, but I don't know about " + topic + ".";
 				return answer;
 			}
 
