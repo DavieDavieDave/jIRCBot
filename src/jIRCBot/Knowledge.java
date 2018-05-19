@@ -26,7 +26,7 @@ public class Knowledge {
 		
 		if (m.matches()) {
 
-			String topic = m.group(1);
+			String topic = m.group(1).toLowerCase();
 			String data = m.group(2);
 
 			Knowledge kb = new Knowledge();
@@ -64,6 +64,8 @@ public class Knowledge {
 		
 		Knowledge kb = new Knowledge();
 
+		topic = topic.toLowerCase();
+		
 		if (kb.botUser(user)) {
 			if (kb.getKnowledge(topic)[0] != null) {
 				kb.deleteKnowledge(topic);
@@ -90,7 +92,7 @@ public class Knowledge {
 
 		if (m.matches()) {
 
-			String topic = m.group(1);
+			String topic = m.group(1).toLowerCase();
 
 			Knowledge kb = new Knowledge();
 			String result[] = kb.getKnowledge(topic);

@@ -46,7 +46,7 @@ public class jIRCBot extends ListenerAdapter {
 			args = null;
 		}
 		
-		switch (command) {
+		switch (command.toLowerCase()) {
 		case "!learn":
 			event.respondChannel(Knowledge.learn(args, user));
 			break;
@@ -97,7 +97,7 @@ public class jIRCBot extends ListenerAdapter {
 		}
 	
 		if (Owner.isOwner(user, mask)) {			
-			switch (command) {
+			switch (command.toLowerCase()) {
 			case "setpass":
 				if (Owner.setPassword(user, args, mask))
 					event.respondPrivateMessage("Password set");
@@ -175,7 +175,7 @@ public class jIRCBot extends ListenerAdapter {
 			args = null;
 		}
 
-		switch (command) {
+		switch (command.toLowerCase()) {
 		case "!version":
 			event.respondWith("jIRCBot Version " + global.version);
 			break;
