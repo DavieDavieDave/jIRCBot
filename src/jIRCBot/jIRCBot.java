@@ -33,21 +33,35 @@ public class jIRCBot extends ListenerAdapter {
 		properties.reload();
 		
 		String user = event.getUser().getNick().toString();
-		String command = event.getMessage();
-
-		// Learn topic
-		if (command.startsWith("!learn")) {
-			event.respondChannel(Knowledge.learn(command, user));
-		// Forget topic
-		} else if (command.startsWith("!forget")) {
-			event.respondChannel(Knowledge.forget(command, user));
-		// Display URL title
-		} else if (command.contains("http")) {
-			String url = URL.getURLTitle(command);
-			if (Boolean.parseBoolean(properties.getString("botURLTitles")) && (url != null) ) {
-				event.respondChannel("^ " + url);
+		String eventText = event.getMessage();
+		String command = null;
+		String args = null;
+		
+		if(eventText.contains(" ")) {
+			String[] tmpArr = eventText.split(" ", 2);
+			command = tmpArr[0];
+			args = tmpArr[1];
+		} else {
+			command = event.getMessage();
+			args = null;
+		}
+		
+		switch (command) {
+		case "!learn":
+			event.respondChannel(Knowledge.learn(args, user));
+			break;
+		case "!forget":
+			event.respondChannel(Knowledge.forget(args, user));
+			break;
+		default:
+			if (eventText.contains("http")) {
+				String url = URL.getURLTitle(eventText);
+				if (Boolean.parseBoolean(properties.getString("botURLTitles")) && (url != null) ) {
+					event.respondChannel("^ " + url);
+				}
 			}
 		}
+		
 
 	}	
 	
@@ -69,82 +83,67 @@ public class jIRCBot extends ListenerAdapter {
 
 		String user = event.getUser().getNick().toString();
 		String mask = event.getUser().getHostmask().toString();
+		String eventText = event.getMessage();
+		String command = null;
+		String args = null;
 		
-		String command = event.getMessage();
-		
-		// Authenticate
-		if (command.startsWith("auth")) {
-			String[] args = event.getMessage().split(" ");
-			String password = args[1];
-			if(Owner.authenticateOwner(user, password, mask)) {
-				event.respondPrivateMessage("Authenticated");
-			}
-		// Set password
-		} else if (command.startsWith("setpass")) {
-			String[] args = event.getMessage().split(" ");
-			String password = args[1];
-			if(Owner.setPassword(user, password, mask)) {
-				event.respondPrivateMessage("Password set");
-			}
-		// Add user
-		} else if (command.startsWith("adduser")) {
-			String[] args = event.getMessage().split(" ");
-			String userToAdd = args[1];
-			if(Owner.isOwner(user, mask) && Owner.addUser(userToAdd)) {
-				event.respondPrivateMessage("User added");
-			}
-		// Del user
-		} else if (command.startsWith("deluser")) {
-			String[] args = event.getMessage().split(" ");
-			String userToDel = args[1];
-			if(Owner.isOwner(user, mask) && Owner.delUser(userToDel)) {
-				event.respondPrivateMessage("User deleted");
-			}
-		// List users
-		} else if (command.startsWith("listusers")) {
-			if(Owner.isOwner(user, mask)) {
+		if(eventText.contains(" ")) {
+			String[] tmpArr = eventText.split(" ", 2);
+			command = tmpArr[0];
+			args = tmpArr[1];
+		} else {
+			command = event.getMessage();
+			args = null;
+		}
+	
+		if (Owner.isOwner(user, mask)) {			
+			switch (command) {
+			case "setpass":
+				if (Owner.setPassword(user, args, mask))
+					event.respondPrivateMessage("Password set");
+				break;
+			case "adduser":
+				if (Owner.addUser(args))
+					event.respondPrivateMessage("User added");
+				break;
+			case "deluser":
+				if (Owner.delUser(args))
+					event.respondPrivateMessage("User deleted");
+				break;
+			case "listusers":
 				event.respondPrivateMessage(Owner.listUsers());
-			}
-		// Add bad word
-		} else if (command.startsWith("addword")) {
-			String[] args = event.getMessage().split(" ");
-			String wordToAdd = args[1];
-			if(Owner.isOwner(user, mask) && BadWords.addWord(wordToAdd)) {
-				event.respondPrivateMessage("Word added");
-			}
-		// Delete bad word
-		} else if (command.startsWith("delword")) {
-			String[] args = event.getMessage().split(" ");
-			String wordToDel = args[1];
-			if(Owner.isOwner(user, mask) && BadWords.delWord(wordToDel)) {
-				event.respondPrivateMessage("Word deleted");
-			}
-		// List bad words
-		} else if (command.startsWith("listwords")) {
-			if(Owner.isOwner(user, mask)) {
+				break;
+			case "addword":
+				if (BadWords.addWord(args))
+					event.respondPrivateMessage("Word added");
+				break;
+			case "delword":
+				if (BadWords.delWord(args))
+					event.respondPrivateMessage("Word deleted");
+				break;
+			case "listwords":
 				event.respondPrivateMessage(BadWords.listWords());
-			}
-		// Join a channel
-		} else if (command.startsWith("join")) {
-			if(Owner.isOwner(user, mask)) {
-				String[] args = event.getMessage().split(" ");
-				String channel = args[1];
-				event.respondPrivateMessage("Joining channel " + channel);
-				event.getBot().sendIRC().joinChannel(channel);
-			}
-		// Leave a channel
-		} else if (command.startsWith("part")) {
-			if(Owner.isOwner(user, mask)) {
-				String[] args = event.getMessage().split(" ");
-				String channel = args[1];
-				event.respondPrivateMessage("Leaving channel " + channel);
-				event.getBot().sendRaw().rawLine("PART " + channel);
-			}
-		} else if (command.startsWith("quit")) {
-			if(Owner.isOwner(user, mask)) {
+				break;
+			case "join":
+				event.respondPrivateMessage("Joining channel " + args);
+				event.getBot().sendIRC().joinChannel(args);
+				break;
+			case "part":
+				event.respondPrivateMessage("Leaving channel " + args);
+				event.getBot().sendRaw().rawLine("PART " + args);
+				break;
+			case "quit":
 				event.respondPrivateMessage("Quitting");
 				event.getBot().stopBotReconnect();
 				event.getBot().sendIRC().quitServer();
+				break;
+			}
+		} else {
+			switch(command) {
+				case "auth":
+					if (Owner.authenticateOwner(user, args, mask))
+						event.respondPrivateMessage("Authenticated");
+					break;
 			}
 		}
 		
@@ -163,26 +162,39 @@ public class jIRCBot extends ListenerAdapter {
 		
 		Global global = Global.getInstance();
 
-		String command = event.getMessage();
+		String eventText = event.getMessage();
+		String command = null;
+		String args = null;
+		
+		if(eventText.contains(" ")) {
+			String[] tmpArr = eventText.split(" ", 2);
+			command = tmpArr[0];
+			args = tmpArr[1];
+		} else {
+			command = event.getMessage();
+			args = null;
+		}
 
-		// Query topic
-		if (command.startsWith("?")) {
-			String answer = Knowledge.query(command);
-			if (answer != null) {
-				event.respondWith(answer);
-			}
-		// Version
-		} else if (command.startsWith("!version")) {
+		switch (command) {
+		case "!version":
 			event.respondWith("jIRCBot Version " + global.version);
-		// 8 Ball
-		} else if (command.startsWith("!8ball")) {
+			break;
+		case "!8ball":
 			event.respondWith(Toys.EightBall());
-		// BOFH
-		} else if (command.startsWith("!bofh")) {
+			break;
+		case "!bofh":
 			event.respondWith(Toys.BOFH());
-		// Flip a coin
-		} else if (command.startsWith("!flipcoin")) {
+			break;
+		case "!flipcoin":
 			event.respondWith(Toys.FlipCoin());
+			break;
+		default:
+			if (command.startsWith("?")) {
+				String answer = Knowledge.query(command);
+				if (answer != null) {
+					event.respondWith(answer);
+				}
+			}
 		}
 		
 	}

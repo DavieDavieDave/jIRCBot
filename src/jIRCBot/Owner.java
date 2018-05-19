@@ -1,7 +1,6 @@
 package jIRCBot;
 
 import java.util.Arrays;
-
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.ArrayUtils;
@@ -42,7 +41,8 @@ public class Owner {
 		
 		if (user.equals(properties.getString("botOwner")) && mask.equals(properties.getString("botOwnerMask")))
 			return true;
-		
+
+		//throw new Exception("Authentication Error");
 		return false;
 		
 	}

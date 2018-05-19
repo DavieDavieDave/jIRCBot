@@ -20,13 +20,14 @@ public class Knowledge {
 	 */
 	public static String learn(String message, String user) throws ConfigurationException {
 		
-		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
+		//Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
+		Pattern pattern = Pattern.compile("(\\b\\w+?\\b)\\s(.*)");
 		Matcher m = pattern.matcher(message);
 		
 		if (m.matches()) {
 
-			String topic = m.group(2);
-			String data = m.group(3);
+			String topic = m.group(1);
+			String data = m.group(2);
 
 			Knowledge kb = new Knowledge();
 			BadWords bw = new BadWords();
@@ -59,33 +60,24 @@ public class Knowledge {
 	/*
 	 * Forget a topic
 	 */
-	public static String forget(String message, String user) throws ConfigurationException {
+	public static String forget(String topic, String user) throws ConfigurationException {
 		
-		Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)");
-		Matcher m = pattern.matcher(message);
-		
-		if (m.matches()) {
-			
-			String topic = m.group(2);
-			Knowledge kb = new Knowledge();
+		Knowledge kb = new Knowledge();
 
-			if (kb.botUser(user)) {
-				if (kb.getKnowledge(topic)[0] != null) {
-					kb.deleteKnowledge(topic);
-					String answer = "OK " + user + ", I forgot about " + topic + ".";
-					return answer;
-				} else {
-					String answer = "Sorry, I don't know about " + topic + ".";
-					return answer;
-				}
+		if (kb.botUser(user)) {
+			if (kb.getKnowledge(topic)[0] != null) {
+				kb.deleteKnowledge(topic);
+				String answer = "OK " + user + ", I forgot about " + topic + ".";
+				return answer;
 			} else {
-				String answer = "Sorry " + user + ", you're not allowed to do that.";
+				String answer = "Sorry, I don't know about " + topic + ".";
 				return answer;
 			}
-			
-		} 
+		} else {
+			String answer = "Sorry " + user + ", you're not allowed to do that.";
+			return answer;
+		}
 
-		return "Sorry, I don't understand!";
 	}
 	
 	/*
