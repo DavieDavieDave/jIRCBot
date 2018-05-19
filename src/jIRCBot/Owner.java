@@ -42,7 +42,6 @@ public class Owner {
 		if (user.equals(properties.getString("botOwner")) && mask.equals(properties.getString("botOwnerMask")))
 			return true;
 
-		//throw new Exception("Authentication Error");
 		return false;
 		
 	}
