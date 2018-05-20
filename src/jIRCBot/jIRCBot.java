@@ -139,7 +139,7 @@ public class jIRCBot extends ListenerAdapter {
 				break;
 			}
 		} else {
-			switch(command) {
+			switch(command.toLowerCase()) {
 				case "auth":
 					if (Owner.authenticateOwner(user, args, mask))
 						event.respondPrivateMessage("Authenticated");
