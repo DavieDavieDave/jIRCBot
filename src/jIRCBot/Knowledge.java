@@ -1,5 +1,6 @@
 package jIRCBot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -239,11 +240,11 @@ public class Knowledge {
 		String sql = "SELECT topic, data FROM knowledge WHERE topic = ? LIMIT 1;";
 
 		try (Connection conn = this.connect();
-				PreparedStatement pstmt  = conn.prepareStatement(sql)){
+				PreparedStatement pstmt = conn.prepareStatement(sql)){
 
 			pstmt.setString(1,topic);
 
-			ResultSet rs  = pstmt.executeQuery();
+			ResultSet rs = pstmt.executeQuery();
                            
 			while (rs.next()) {
 				String[] result = {
@@ -263,6 +264,31 @@ public class Knowledge {
 
 		return result;
 
+	}
+	
+	public ArrayList<String> getIndex() throws ConfigurationException {
+		
+		String sql = "SELECT topic FROM knowledge order by TOPIC ASC;";
+		
+		try (Connection conn = this.connect();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			ArrayList<String> index = new ArrayList<String>();
+			
+			while (rs.next()) {
+				index.add(rs.getString("topic"));
+			}
+
+			return index;
+			
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
+		
+		return null;
+		
 	}
     
 	/*

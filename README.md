@@ -30,16 +30,25 @@ To set the `botOwnerPassword`, send a private message with `setpass <password>`.
 # Basic commands
 Command all IRC users may use.
 
-#### Query a topic
+### Query a topic
 
     ?<topic>
 
 Example:
 
     <exampleNick> ?sometopic
-        <jIRCBot> Here's what I know about sometopic: This is some text about the topic
+        <jIRCBot> [sometopic] This is some text about the topic
 
-#### 8 Ball
+### Knowledge index
+
+    !index
+    
+Example:
+
+    <exampleNick> !index
+        <jIRCBot> Index: topic1, topic2, topic3
+        
+### 8 Ball
 
     !8ball <optional question>
 
@@ -48,7 +57,7 @@ Example:
     <exampleNick> !8ball Do I feel lucky?
         <jIRCBot> It is certain
     
-#### BOFH
+### BOFH
 
     !bofh
     
@@ -57,7 +66,7 @@ Example:
     <exampleNick> !bofh
         <jIRCBot> Multiplexed Stack Dereferencing Signal
     
-#### Flip a coin
+### Flip a coin
 
     !flipcoin
     
@@ -94,38 +103,119 @@ Bot owner commands only work via PRIVMSG. The bot onwer must be authenticated to
 
     auth <password>
 
+Authenticates the owner. This will update the user nick and hostmark in the `config.properties` file.
+
+Example:
+
+    <exampleNick> auth password
+        <jIRCBot> Authenticated
+
 ### Set owner password
 
     setpass <password>
+
+Sets the owner password.
     
+Example:
+
+    <exampleNick> setpass password
+        <jIRCBot> Password set    
+
 ### Add a user
 
     adduser <user>
-      
+
+Add a known user.
+
+Example:
+
+    <exampleNick> adduser otherNick
+        <jIRCBot> User added    
+
 ### Delete a user
 
     deluser <user>
-    
+
+Removes a known user.
+
+Example:
+
+    <exampleNick> deluser otherNick
+        <jIRCBot> User deleted    
+
 ### List users
 
     listusers
 
+Returns a list of known users.
+
+Example:
+
+    <exampleNick> listusers
+        <jIRCBot> exampleNick, otherNick   
+
 ### Add bad word
 
     addword <word>
-    
+
+Add a bad word.
+
+Example:
+
+    <exampleNick> addword badword
+        <jIRCBot> Word added   
+
 ### Delete bad word
 
     delword <word>
+
+Removes a bad word.
     
+Example:
+
+    <exampleNick> delword badword
+        <jIRCBot> Word deleted   
+
 ### List bad words
 
     listwords
+
+Returns a list of bad words
     
+Example:
+
+    <exampleNick> listwords
+        <jIRCBot> badword, notniceword, otherword   
+
 ### Join a channel
 
     join #channel
-    
+
+Causes the bot to join a channel
+
+Example:
+
+    <exampleNick> join ##other_channel
+        <jIRCBot> Joining channel ##other_channel   
+
 ### Leave a channel
 
     part #channel
+
+Causes the bot to leave a channel
+    
+Example:
+
+    <exampleNick> part ##other_channel
+        <jIRCBot> Leaving channel ##other_channel   
+
+### List channels
+
+    listchannels
+
+Returns a list of channels the bot is joined with channel modes.
+    
+Example:
+
+    <exampleNick> listcannels 
+        <jIRCBot> Channels: ##bot_channel [+nt], ##other_channel [+Ccgnt]

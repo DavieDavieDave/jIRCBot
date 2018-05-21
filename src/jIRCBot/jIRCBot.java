@@ -1,8 +1,11 @@
 package jIRCBot;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.lang.StringUtils;
+import org.pircbotx.Channel;
 import org.pircbotx.Configuration;
 import org.pircbotx.PircBotX;
 import org.pircbotx.UtilSSLSocketFactory;
@@ -132,20 +135,31 @@ public class jIRCBot extends ListenerAdapter {
 				event.respondPrivateMessage("Leaving channel " + args);
 				event.getBot().sendRaw().rawLine("PART " + args);
 				break;
+			case "listchannels":
+				Iterable<Channel> channelsIterable = event.getBot().getUserBot().getChannels();
+				ArrayList<String> channelArrayList = new ArrayList<String>();
+				for (Channel channel : channelsIterable) {
+					String name = channel.getName();
+					String mode = channel.getMode();
+					channelArrayList.add(name + " [" + mode + "]");
+				}
+				String channels = StringUtils.join(channelArrayList, ", ");
+				event.respondPrivateMessage("Channels: " + channels);
+				break;
 			case "quit":
 				event.respondPrivateMessage("Quitting");
 				event.getBot().stopBotReconnect();
 				event.getBot().sendIRC().quitServer();
 				break;
 			}
-		} else {
-			switch(command.toLowerCase()) {
-				case "auth":
-					if (Owner.authenticateOwner(user, args, mask))
-						event.respondPrivateMessage("Authenticated");
-					break;
+		} 
+			
+		switch(command.toLowerCase()) {
+			case "auth":
+				if (Owner.authenticateOwner(user, args, mask))
+					event.respondPrivateMessage("Authenticated");
+				break;
 			}
-		}
 		
 	}
 	
@@ -161,6 +175,7 @@ public class jIRCBot extends ListenerAdapter {
 	public void onGenericMessage(GenericMessageEvent event) throws ConfigurationException {
 		
 		Global global = Global.getInstance();
+		Knowledge kb = new Knowledge();
 
 		String eventText = event.getMessage();
 		String command = null;
@@ -187,6 +202,10 @@ public class jIRCBot extends ListenerAdapter {
 			break;
 		case "!flipcoin":
 			event.respondWith(Toys.FlipCoin());
+			break;
+		case "!index":
+			String index = StringUtils.join(kb.getIndex(), ", ");
+			event.respondPrivateMessage("Index: " + index);
 			break;
 		default:
 			if (command.startsWith("?")) {
