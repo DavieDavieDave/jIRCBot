@@ -64,7 +64,6 @@ public class jIRCBot extends ListenerAdapter {
 				}
 			}
 		}
-		
 
 	}	
 	

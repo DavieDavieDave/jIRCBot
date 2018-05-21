@@ -21,7 +21,6 @@ public class Knowledge {
 	 */
 	public static String learn(String message, String user) throws ConfigurationException {
 		
-		//Pattern pattern = Pattern.compile("[\\?|!](\\b\\w+?\\b)\\s(\\b\\w+?\\b)\\s(.*)");
 		Pattern pattern = Pattern.compile("(\\b\\w+?\\b)\\s(.*)");
 		Matcher m = pattern.matcher(message);
 		
