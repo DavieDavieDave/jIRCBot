@@ -206,11 +206,20 @@ public class jIRCBot extends ListenerAdapter {
 			String index = StringUtils.join(kb.getIndex(), ", ");
 			event.respondPrivateMessage("Index: " + index);
 			break;
+		case "!zfscalc":
+			ZFSCalc zfscalc = ZFSCalc.getInstance();
+			String[] values = args.split(" ");
+			int raidz = Integer.parseInt(values[0]);
+			int drives = Integer.parseInt(values[1]);
+			int size = Integer.parseInt(values[2]);
+			String zfsResult = zfscalc.RIADZCalculator(raidz, drives, size);
+			if (zfsResult != null)
+				event.respondWith(zfsResult);
 		default:
 			if (command.startsWith("?")) {
-				String answer = Knowledge.query(command);
-				if (answer != null) {
-					event.respondWith(answer);
+				String kbAnswer = Knowledge.query(command);
+				if (kbAnswer != null) {
+					event.respondWith(kbAnswer);
 				}
 			}
 		}
