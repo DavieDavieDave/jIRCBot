@@ -44,7 +44,11 @@ public class ZFSCalc {
 		Double driveSize = 0.00;
 		
 		String answer = new String();
-		String tooFewDrives = "Sorry, but that is not a valid configuration.";
+		String invalidConfig = "Sorry, but that is not a valid configuration.";
+		
+		if ((raidz<0) || (drives<0) || (size<0)) {
+			return null;
+		}
 		
 		switch (raidz) {
 		case 1:
@@ -53,7 +57,7 @@ public class ZFSCalc {
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
 			if (drives < minDrives)
-				return tooFewDrives;
+				return invalidConfig;
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
@@ -64,7 +68,7 @@ public class ZFSCalc {
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
 			if (drives < minDrives)
-				return tooFewDrives;
+				return invalidConfig;
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
@@ -75,7 +79,7 @@ public class ZFSCalc {
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
 			if (drives < minDrives)
-				return tooFewDrives;
+				return invalidConfig;
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
