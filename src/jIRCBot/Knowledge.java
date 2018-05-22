@@ -35,15 +35,15 @@ public class Knowledge {
 			if (kb.botUser(user)) {
 				if (!bw.badWords(topic) && !bw.badWords(data)) {
 					if (kb.getKnowledge(topic)[0] != null) {
-						String answer = "I already known about " + topic + ".";
+						String answer = String.format("I already know about %s.", topic);
 						return answer;
 					} else {
 						kb.addKnowledge(topic, user, data);
-						String answer = "OK " + user + ", I now know about " + topic + ".";
+						String answer = String.format("OK %s, I now known about %s.", user, topic);
 						return answer;
 					}
 				} else {
-					String answer = "Sorry " + user + ", but I'm not allowed to learn about that.";
+					String answer = String.format("Sorry %s, but I'm now allowed to learn about that.", user);				
 					return answer;
 				}
 			} else {
@@ -69,14 +69,14 @@ public class Knowledge {
 		if (kb.botUser(user)) {
 			if (kb.getKnowledge(topic)[0] != null) {
 				kb.deleteKnowledge(topic);
-				String answer = "OK " + user + ", I forgot about " + topic + ".";
+				String answer = String.format("OK %s, I forgot about %s.", user, topic);
 				return answer;
 			} else {
-				String answer = "Sorry, I don't know about " + topic + ".";
+				String answer = String.format("Sorry, but I don't know about %s.", topic);
 				return answer;
 			}
 		} else {
-			String answer = "Sorry " + user + ", you're not allowed to do that.";
+			String answer = String.format("Sorry %s, you're not allowed to do that.", user);
 			return answer;
 		}
 
@@ -98,10 +98,10 @@ public class Knowledge {
 			String result[] = kb.getKnowledge(topic);
 
 			if (result[0] != null) {
-				String answer = "[" + topic + "] " + result[1];
+				String answer = String.format("[%s] %s", topic, result[1]);
 				return answer;
 			} else {
-				String answer = "Sorry, but I don't know about " + topic + ".";
+				String answer = String.format("Sorry, but I don't know about %s.", topic);
 				return answer;
 			}
 
@@ -110,7 +110,22 @@ public class Knowledge {
 		return null;
 
 	}
-		
+
+	public static String metadata(String topic) throws ConfigurationException {
+
+		Knowledge kb = new Knowledge();
+		String result[] = kb.getMetadata(topic.toLowerCase());
+
+		if (result[0] != null) {
+			String answer = String.format("[%s] Author: %s, Timestamp: %s", topic, result[1], result[2]);
+			return answer;
+		} else {
+			String answer = String.format("Sorry, but I don't know about %s.", topic);
+			return answer;
+		}
+
+	}
+	
 	/*
 	 * Database connection
 	 */
@@ -249,6 +264,41 @@ public class Knowledge {
 				String[] result = {
 						rs.getString("topic"),
 						rs.getString("data"),
+				};
+				return result;
+			}
+
+		} catch (SQLException e) {
+
+			System.out.println(e.getMessage());
+
+		}
+
+		String[] result = {null,null};
+
+		return result;
+
+	}
+	
+	/*
+	 * Knowledge metadata
+	 */
+	public String[] getMetadata(String topic) throws ConfigurationException {
+
+		String sql = "SELECT topic, author, timestamp FROM knowledge WHERE topic = ? LIMIT 1;";
+
+		try (Connection conn = this.connect();
+				PreparedStatement pstmt = conn.prepareStatement(sql)){
+
+			pstmt.setString(1,topic);
+
+			ResultSet rs = pstmt.executeQuery();
+                           
+			while (rs.next()) {
+				String[] result = {
+						rs.getString("topic"),
+						rs.getString("author"),
+						rs.getString("timestamp"),
 				};
 				return result;
 			}

@@ -215,6 +215,10 @@ public class jIRCBot extends ListenerAdapter {
 			String zfsResult = zfscalc.RIADZCalculator(raidz, drives, size);
 			if (zfsResult != null)
 				event.respondWith(zfsResult);
+			break;
+		case "!meta":
+			event.respondWith(Knowledge.metadata(args));
+			break;
 		default:
 			if (command.startsWith("?")) {
 				String kbAnswer = Knowledge.query(command);

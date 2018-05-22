@@ -47,7 +47,16 @@ Example:
 
     <exampleNick> !index
         <jIRCBot> Index: topic1, topic2, topic3
-        
+
+### Knowledge metadata
+
+    !meta <topic>
+    
+Example:
+
+    <exampleNick> !meta sometopic
+        <jIRCBot> [sometopic] Author: exampleNick, Timestamp: 2018-05-07 15:25:29
+   
 ### 8 Ball
 
     !8ball <optional question>
