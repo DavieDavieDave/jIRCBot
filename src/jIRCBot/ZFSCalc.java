@@ -45,9 +45,14 @@ public class ZFSCalc {
 		
 		String answer = new String();
 		String invalidConfig = "Sorry, but that is not a valid configuration.";
+		String invalidRaidZ = "Sorry, but that is not a valid RAIDZ level.";
 		
 		if ((raidz<0) || (drives<0) || (size<0)) {
 			return null;
+		}
+		
+		if ((raidz<1) || (raidz>3)) {
+			return invalidRaidZ;
 		}
 		
 		switch (raidz) {
