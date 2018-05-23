@@ -65,7 +65,7 @@ public class ZFSCalc {
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
-			recommendedUsage = this.round(totalSpace * zfscalc.maxRecommendedUsage, 2);
+			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		case 2:
 			minDrives = 4;
@@ -77,7 +77,7 @@ public class ZFSCalc {
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
-			recommendedUsage = this.round(totalSpace * zfscalc.maxRecommendedUsage, 2);
+			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		case 3:
 			minDrives = 5;
@@ -89,7 +89,7 @@ public class ZFSCalc {
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
-			recommendedUsage = this.round(totalSpace * zfscalc.maxRecommendedUsage, 2);
+			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		default:
 			break;
