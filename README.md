@@ -91,7 +91,7 @@ Example:
 Example:
 
     <exampleNick> !zfscalc 2 6 4
-        <jIRCBot> RAID-Z2 [Drives: Data 4, Parity 2] Data: 14.55TB, Parity: 7.28TB, Total Size: 21.83TB
+        <jIRCBot> RAID-Z2 [Drives: 6 (4+2 parity)] Total: 21.83TB, Parity: 7.28TB, Usable: 14.55TB (Max recommended usage: 11.64TB)
 
 # Know user commands
 Commands known IRC users can use. Users can be added and removed using the `!adduser` and `!deluser` owner commands.

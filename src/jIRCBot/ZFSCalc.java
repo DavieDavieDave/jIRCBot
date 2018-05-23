@@ -60,8 +60,6 @@ public class ZFSCalc {
 			parityDrives = 1;
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
-			if (drives < minDrives)
-				return invalidConfig;
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
@@ -72,8 +70,6 @@ public class ZFSCalc {
 			parityDrives = 2;
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
-			if (drives < minDrives)
-				return invalidConfig;
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
@@ -84,8 +80,6 @@ public class ZFSCalc {
 			parityDrives = 3;
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
-			if (drives < minDrives)
-				return invalidConfig;
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
@@ -95,7 +89,8 @@ public class ZFSCalc {
 			break;
 		}
 		
-		// RAID-Zn [Drives: n+n parity] Total size: nTB, Parity size: nTB, Usable space: nTB, Max recommended usage: nTB
+		if (drives < minDrives)
+			return invalidConfig;
 		
 		answer = String.format("RAID-Z%s [Drives: %s (%s+%s parity)] Total: %sTB, Parity: %sTB, Usable: %sTB (Max recommended usage: %sTB)", 
 				raidz, drives, dataDrives, parityDrives, totalSpace, paritySpace, dataSpace, recommendedUsage);
