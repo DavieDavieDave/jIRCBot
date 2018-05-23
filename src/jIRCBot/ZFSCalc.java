@@ -95,7 +95,10 @@ public class ZFSCalc {
 			break;
 		}
 		
-		answer = String.format("RAID-Z%s [Drives: Data %s, Parity %s] Data: %sTB, Parity: %sTB, Total Size: %sTB (Max recommended usage: %sTB)", raidz, dataDrives, parityDrives, dataSpace, paritySpace, totalSpace, recommendedUsage);
+		// RAID-Zn [Drives: n+n parity] Total size: nTB, Parity size: nTB, Usable space: nTB, Max recommended usage: nTB
+		
+		answer = String.format("RAID-Z%s [Drives: %s (%s+%s parity)] Total: %sTB, Parity: %sTB, Usable: %sTB (Max recommended usage: %sTB)", 
+				raidz, drives, dataDrives, parityDrives, totalSpace, paritySpace, dataSpace, recommendedUsage);
 		
 		if (totalSpace > 0) {
 			return answer;
