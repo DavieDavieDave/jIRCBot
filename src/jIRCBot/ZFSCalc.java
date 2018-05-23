@@ -42,18 +42,17 @@ public class ZFSCalc {
 		Double paritySpace = 0.00;
 		Double totalSpace = 0.00;
 		Double driveSize = 0.00;
+		Double recommendedUsage = 0.00;
 		
 		String answer = new String();
 		String invalidConfig = "Sorry, but that is not a valid configuration.";
 		String invalidRaidZ = "Sorry, but that is not a valid RAIDZ level.";
 		
-		if ((raidz<0) || (drives<0) || (size<0)) {
+		if ((raidz<0) || (drives<0) || (size<0))
 			return null;
-		}
 		
-		if ((raidz<1) || (raidz>3)) {
+		if ((raidz<1) || (raidz>3))
 			return invalidRaidZ;
-		}
 		
 		switch (raidz) {
 		case 1:
@@ -66,6 +65,7 @@ public class ZFSCalc {
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
+			recommendedUsage = this.round(totalSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		case 2:
 			minDrives = 4;
@@ -77,6 +77,7 @@ public class ZFSCalc {
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
+			recommendedUsage = this.round(totalSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		case 3:
 			minDrives = 5;
@@ -88,12 +89,13 @@ public class ZFSCalc {
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
+			recommendedUsage = this.round(totalSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		default:
 			break;
 		}
 		
-		answer = String.format("RAID-Z%s [Drives: Data %s, Parity %s] Data: %sTB, Parity: %sTB, Total Size: %sTB", raidz, dataDrives, parityDrives, dataSpace, paritySpace, totalSpace);
+		answer = String.format("RAID-Z%s [Drives: Data %s, Parity %s] Data: %sTB, Parity: %sTB, Total Size: %sTB (Max recommended usage: %sTB)", raidz, dataDrives, parityDrives, dataSpace, paritySpace, totalSpace, recommendedUsage);
 		
 		if (totalSpace > 0) {
 			return answer;
