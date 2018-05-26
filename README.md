@@ -28,6 +28,7 @@ The properties `ircChannels` and `botUsers` are comma delimited.
 To set the `botOwnerPassword`, send a private message with `setpass <password>`. Make sure you set the `botOwner` and `botOwnerMask` property when running the bot for the first time.
 
 # Basic commands
+
 Command all IRC users may use.
 
 ### Query a topic
@@ -94,6 +95,7 @@ Example:
         <jIRCBot> RAID-Z2 [Drives: 6 (4+2 parity)] Total: 21.83TB, Parity: 7.28TB, Usable: 14.55TB (Max recommended usage: 11.64TB)
 
 # Know user commands
+
 Commands known IRC users can use. Users can be added and removed using the `!adduser` and `!deluser` owner commands.
 
 ### Add knowledge
@@ -115,6 +117,7 @@ Example:
         <jIRCBot> OK exampleNick, I forgot about sometopic.
 
 # Bot owner commands
+
 Bot owner commands only work via PRIVMSG. The bot onwer must be authenticated to use these commands.
 
 ### Authenticate
@@ -198,7 +201,7 @@ Example:
 
     listwords
 
-Returns a list of bad words
+Returns a list of bad words.
     
 Example:
 
@@ -209,7 +212,7 @@ Example:
 
     join #channel
 
-Causes the bot to join a channel
+Causes the bot to join a channel.
 
 Example:
 
@@ -220,7 +223,7 @@ Example:
 
     part #channel
 
-Causes the bot to leave a channel
+Causes the bot to leave a channel.
     
 Example:
 
@@ -237,3 +240,25 @@ Example:
 
     <exampleNick> listcannels 
         <jIRCBot> Channels: ##bot_channel [+nt], ##other_channel [+Ccgnt]
+
+### Lock a knowledge topic
+
+    locktopic <topic>
+
+Locks a topic in the knowledge database and prevents it from being forgotten.
+    
+Example:
+
+    <exampleNick> locktopic sometopic
+        <jIRCBot> Topic locked
+
+### Unlock a knowledge topic
+
+    unlocktopic <topic>
+
+Unlocks a topic in the knowledge database.
+    
+Example:
+
+    <exampleNick> unlocktopic sometopic
+        <jIRCBot> Topic unlocked
