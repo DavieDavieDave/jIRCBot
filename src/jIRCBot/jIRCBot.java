@@ -218,7 +218,7 @@ public class jIRCBot extends ListenerAdapter {
 		case "!zfscalc":
 			ZFSCalc zfscalc = ZFSCalc.getInstance();
 			String[] values = args.split(" ");
-			int raidz = Integer.parseInt(values[0]);
+			String raidz = values[0];
 			int drives = Integer.parseInt(values[1]);
 			int size = Integer.parseInt(values[2]);
 			String zfsResult = zfscalc.RIADZCalculator(raidz, drives, size);

@@ -30,7 +30,7 @@ public class ZFSCalc {
 		
 	}
 	
-	public String RIADZCalculator(int raidz, int drives, int size) {
+	public String RIADZCalculator(String level, int drives, int size) {
 		
 		ZFSCalc zfscalc = ZFSCalc.getInstance();
 		
@@ -45,55 +45,87 @@ public class ZFSCalc {
 		Double recommendedUsage = 0.00;
 		
 		String answer = new String();
+		String raidLevel = new String();
 		String invalidConfig = "Sorry, but that is not a valid configuration.";
-		String invalidRaidZ = "Sorry, but that is not a valid RAIDZ level.";
+		String invalidLevel = "Sorry, but that is not a valid ZFS level.";
+		String invalidMirror = "Number of drives must be an even number.";
 		
-		if ((raidz<0) || (drives<0) || (size<0))
-			return null;
+		if ((level == null) || (drives<0) || (size<0))
+			return invalidConfig;
+				
+		String[] levels = {"raidz1","raidz2","raidz3","mirror","stripe"};
 		
-		if ((raidz<1) || (raidz>3))
-			return invalidRaidZ;
+		int i;
+		for (i=0; i <levels.length; i++)
+			if(level.toLowerCase().contains(levels[i])) break;
 		
-		switch (raidz) {
-		case 1:
+		switch (i) {
+		case 0:
 			minDrives = 3;
 			parityDrives = 1;
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
+			raidLevel = "RAID-Z1";
+			dataSpace = this.round(driveSize * dataDrives, 2);
+			paritySpace = this.round(driveSize * parityDrives, 2);
+			totalSpace = this.round(driveSize * drives, 2);
+			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
+			break;
+		case 1:
+			minDrives = 4;
+			parityDrives = 2;
+			dataDrives = drives - parityDrives;
+			driveSize = size * zfscalc.tbToTibRatio;
+			raidLevel = "RAID-Z2";
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
 			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		case 2:
-			minDrives = 4;
-			parityDrives = 2;
+			minDrives = 5;
+			parityDrives = 3;
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
+			raidLevel = "RAID-Z3";
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
 			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		case 3:
-			minDrives = 5;
-			parityDrives = 3;
+			minDrives = 2;
+			parityDrives = drives / 2;
+			dataDrives = drives / 2;
+			driveSize = size * zfscalc.tbToTibRatio;
+			raidLevel = "Mirror";
+			dataSpace = this.round(driveSize * dataDrives, 2);
+			paritySpace = this.round(driveSize * parityDrives, 2);
+			totalSpace = this.round(driveSize * drives, 2);
+			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
+			if(drives%2 != 0)
+				return invalidMirror;
+			break;
+		case 4:
+			minDrives = 1;
+			parityDrives = 0;
 			dataDrives = drives - parityDrives;
 			driveSize = size * zfscalc.tbToTibRatio;
+			raidLevel = "Stripe";
 			dataSpace = this.round(driveSize * dataDrives, 2);
 			paritySpace = this.round(driveSize * parityDrives, 2);
 			totalSpace = this.round(driveSize * drives, 2);
 			recommendedUsage = this.round(dataSpace * zfscalc.maxRecommendedUsage, 2);
 			break;
 		default:
-			break;
+			return invalidLevel;
 		}
 		
 		if (drives < minDrives)
 			return invalidConfig;
 		
-		answer = String.format("RAID-Z%s [Drives: %s (%s+%s parity)] Total: %sTB, Parity: %sTB, Usable: %sTB (Max recommended usage: %sTB)", 
-				raidz, drives, dataDrives, parityDrives, totalSpace, paritySpace, dataSpace, recommendedUsage);
+		answer = String.format("%s [Drives: %s (%s+%s parity)] Total: %sTB, Parity: %sTB, Usable: %sTB (Max recommended usage: %sTB)", 
+				raidLevel, drives, dataDrives, parityDrives, totalSpace, paritySpace, dataSpace, recommendedUsage);
 		
 		if (totalSpace > 0) {
 			return answer;
