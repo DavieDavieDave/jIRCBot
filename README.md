@@ -241,6 +241,24 @@ Example:
     <exampleNick> listcannels 
         <jIRCBot> Channels: ##bot_channel [+nt], ##other_channel [+Ccgnt]
 
+### Add knowledge
+
+    learn <topic> <topic text>
+    
+Example:
+
+    <exampleNick> learn sometopic This is some text about the topic
+        <jIRCBot> OK exampleNick, I now know about sometopic.
+    
+### Forget knowledge
+
+    forget <topic>
+    
+Example:
+
+    <exampleNick> forget sometopic 
+        <jIRCBot> OK exampleNick, I forgot about sometopic.
+
 ### Lock a knowledge topic
 
     locktopic <topic>

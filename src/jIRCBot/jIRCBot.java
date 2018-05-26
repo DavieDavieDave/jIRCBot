@@ -146,6 +146,12 @@ public class jIRCBot extends ListenerAdapter {
 				String channels = StringUtils.join(channelArrayList, ", ");
 				event.respondPrivateMessage("Channels: " + channels);
 				break;
+			case "learn":
+				event.respondPrivateMessage(Knowledge.learn(args, user));
+				break;
+			case "forget":
+				event.respondPrivateMessage(Knowledge.forget(args, user));
+				break;
 			case "locktopic":
 				if (kb.lockTopic(args))
 					event.respondPrivateMessage("Topic locked");
