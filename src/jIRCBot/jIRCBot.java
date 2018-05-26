@@ -79,6 +79,7 @@ public class jIRCBot extends ListenerAdapter {
 	public void onPrivateMessage(PrivateMessageEvent event) throws ConfigurationException {
 
 		Global global = Global.getInstance();
+		Knowledge kb = new Knowledge();
 
 		PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
 		properties.reload();
@@ -144,6 +145,14 @@ public class jIRCBot extends ListenerAdapter {
 				}
 				String channels = StringUtils.join(channelArrayList, ", ");
 				event.respondPrivateMessage("Channels: " + channels);
+				break;
+			case "locktopic":
+				if (kb.lockTopic(args))
+					event.respondPrivateMessage("Topic locked");
+				break;
+			case "unlocktopic":
+				if (kb.unlockTopic(args))
+					event.respondPrivateMessage("Topic unlocked");
 				break;
 			case "quit":
 				event.respondPrivateMessage("Quitting");

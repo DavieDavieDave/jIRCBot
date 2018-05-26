@@ -66,19 +66,24 @@ public class Knowledge {
 
 		topic = topic.toLowerCase();
 		
+		String[] kbResult = kb.getKnowledge(topic);
+		
 		if (kb.botUser(user)) {
-			if (kb.getKnowledge(topic)[0] != null) {
-				kb.deleteKnowledge(topic);
-				String answer = String.format("OK %s, I forgot about %s.", user, topic);
-				return answer;
+			if (kbResult[0] != null ) {
+				switch (Integer.parseInt(kbResult[2])) {
+				case 0:
+					kb.deleteKnowledge(topic);
+					return String.format("OK %s, I forgot about %s.", user, topic);
+				case 1:
+					return String.format("Sorry %s, the topic %s is locked.", user, topic);
+				}
 			} else {
-				String answer = String.format("Sorry, but I don't know about %s.", topic);
-				return answer;
+				return String.format("Sorry, but I don't know about %s.", topic);
 			}
 		} else {
-			String answer = String.format("Sorry %s, you're not allowed to do that.", user);
-			return answer;
+			return String.format("Sorry %s, you're not allowed to do that.", user);
 		}
+		return null;
 
 	}
 	
@@ -115,9 +120,9 @@ public class Knowledge {
 
 		Knowledge kb = new Knowledge();
 		String result[] = kb.getMetadata(topic.toLowerCase());
-
+		
 		if (result[0] != null) {
-			String answer = String.format("[%s] Author: %s, Timestamp: %s", topic, result[1], result[2]);
+			String answer = String.format("[%s] Author: %s, Timestamp: %s, Locked: %s", topic, result[1], result[2], result[3]);
 			return answer;
 		} else {
 			String answer = String.format("Sorry, but I don't know about %s.", topic);
@@ -178,7 +183,8 @@ public class Knowledge {
 				+ "	topic TEXT NOT NULL,\n"
 				+ "	author TEXT NOT NULL,\n"
 				+ " timestamp TEXT NOT NULL,\n"
-				+ " data TEXT NOT NULL"
+				+ " data TEXT NOT NULL,\n"
+				+ " lock INTEGER NOT NULL"
 				+ ");";
 
 		try (Connection conn = this.connect();
@@ -201,7 +207,7 @@ public class Knowledge {
 
 		if (this.getKnowledge(topic)[0] == null) {
 
-			String sql = "INSERT INTO knowledge(topic,author,timestamp,data) VALUES(?,?,datetime('now'),?);";
+			String sql = "INSERT INTO knowledge(topic,author,timestamp,data,lock) VALUES(?,?,datetime('now'),?,0);";
 
 			try (Connection conn = this.connect();
 					PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -226,7 +232,7 @@ public class Knowledge {
 	 */
 	public void deleteKnowledge(String topic) throws ConfigurationException {
 
-		String sql = "DELETE FROM knowledge WHERE topic = ?";
+		String sql = "DELETE FROM knowledge WHERE topic = ? AND lock = 0";
 
 		if (this.getKnowledge(topic)[0] != null) {
 
@@ -251,7 +257,7 @@ public class Knowledge {
 	 */
 	public String[] getKnowledge(String topic) throws ConfigurationException {
 
-		String sql = "SELECT topic, data FROM knowledge WHERE topic = ? LIMIT 1;";
+		String sql = "SELECT topic, data, lock FROM knowledge WHERE topic = ? LIMIT 1;";
 
 		try (Connection conn = this.connect();
 				PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -264,6 +270,7 @@ public class Knowledge {
 				String[] result = {
 						rs.getString("topic"),
 						rs.getString("data"),
+						rs.getString("lock"),
 				};
 				return result;
 			}
@@ -274,7 +281,7 @@ public class Knowledge {
 
 		}
 
-		String[] result = {null,null};
+		String[] result = {null,null,null};
 
 		return result;
 
@@ -285,7 +292,7 @@ public class Knowledge {
 	 */
 	public String[] getMetadata(String topic) throws ConfigurationException {
 
-		String sql = "SELECT topic, author, timestamp FROM knowledge WHERE topic = ? LIMIT 1;";
+		String sql = "SELECT topic, author, timestamp, lock FROM knowledge WHERE topic = ? LIMIT 1;";
 
 		try (Connection conn = this.connect();
 				PreparedStatement pstmt = conn.prepareStatement(sql)){
@@ -299,6 +306,7 @@ public class Knowledge {
 						rs.getString("topic"),
 						rs.getString("author"),
 						rs.getString("timestamp"),
+						rs.getString("lock"),
 				};
 				return result;
 			}
@@ -339,7 +347,39 @@ public class Knowledge {
 		return null;
 		
 	}
-    
+	
+	public Boolean lockTopic(String topic) throws ConfigurationException {	
+		String[] kbResult = this.getKnowledge(topic);		
+		if ((kbResult[0] != null) && (Integer.parseInt(kbResult[2]) == 0)) {
+			String sql = "UPDATE knowledge SET lock = '1' WHERE topic = ?;";
+			try (Connection conn = this.connect();
+					PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setString(1,topic);
+				pstmt.execute();
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		} 
+		return false;
+	}
+
+	public Boolean unlockTopic(String topic) throws ConfigurationException {
+		String[] kbResult = this.getKnowledge(topic);
+		if ((kbResult[0] != null) && (Integer.parseInt(kbResult[2]) == 1)) {
+			String sql = "UPDATE knowledge SET lock = '0' WHERE topic = ?;";
+			try (Connection conn = this.connect();
+					PreparedStatement pstmt = conn.prepareStatement(sql)) {
+				pstmt.setString(1,topic);
+				pstmt.execute();
+				return true;
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return false;
+	}
+	
 	/*
 	 * Compares the user to a know list of users and returns a boolean
 	 */
