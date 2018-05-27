@@ -15,6 +15,7 @@ import org.pircbotx.hooks.events.InviteEvent;
 import org.pircbotx.hooks.events.KickEvent;
 import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
+import org.pircbotx.hooks.events.VersionEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 
 public class jIRCBot extends ListenerAdapter {
@@ -277,6 +278,18 @@ public class jIRCBot extends ListenerAdapter {
 			event.getBot().sendIRC().joinChannel(event.getChannel().getName());
 		}
 		
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.pircbotx.hooks.ListenerAdapter#onVersion(org.pircbotx.hooks.events.VersionEvent)
+	 * 
+	 * Returns version if requested
+	 */
+	@Override
+	public void onVersion(VersionEvent event) throws ConfigurationException {
+		Global global = Global.getInstance();
+		event.respond(String.format("VERSION jIRCBot Version %s - %s", global.version, global.source));
 	}
 
 	/*

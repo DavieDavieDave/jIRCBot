@@ -12,6 +12,7 @@ class Global {
 	
 	// Version
 	public String version;
+	public String source;
 	
 	// Files
 	public String knowledgeDB;
@@ -38,6 +39,7 @@ class Global {
 		
 		// Version
 		version			= "0.1";
+		source			= "github.com/DavieDavieDave/jIRCBot";
 		
 		// Files
 		knowledgeDB		= properties.getString("dbKnowledge");
