@@ -175,7 +175,7 @@ public class jIRCBot extends ListenerAdapter {
 				if (Owner.authenticateOwner(user, args, mask)) {
 					event.respondPrivateMessage("Authenticated");
 				} else {
-					if (!user.contains(owner))
+					if (!user.equals(owner))
 						event.getBot().sendIRC().notice(owner, String.format("Warning! The user %s attempted to authenticate as the bot owner!", user));
 				}
 				break;
