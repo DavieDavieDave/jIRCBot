@@ -87,6 +87,7 @@ public class jIRCBot extends ListenerAdapter {
 
 		String user = event.getUser().getNick().toString();
 		String mask = event.getUser().getHostmask().toString();
+		String owner = properties.getString("botOwner");
 		String eventText = event.getMessage();
 		String command = null;
 		String args = null;
@@ -171,8 +172,12 @@ public class jIRCBot extends ListenerAdapter {
 			
 		switch(command.toLowerCase()) {
 			case "auth":
-				if (Owner.authenticateOwner(user, args, mask))
+				if (Owner.authenticateOwner(user, args, mask)) {
 					event.respondPrivateMessage("Authenticated");
+				} else {
+					if (!user.contains(owner))
+						event.getBot().sendIRC().notice(owner, String.format("Warning! The user %s attempted to authenticate as the bot owner!", user));
+				}
 				break;
 			}
 		
