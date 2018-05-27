@@ -289,7 +289,7 @@ public class jIRCBot extends ListenerAdapter {
 	@Override
 	public void onVersion(VersionEvent event) throws ConfigurationException {
 		Global global = Global.getInstance();
-		event.respond(String.format("VERSION jIRCBot Version %s - %s", global.version, global.source));
+		event.respond(String.format("VERSION jIRCBot Version %s (Powered by PircBotX) - %s", global.version, global.source));
 	}
 
 	/*

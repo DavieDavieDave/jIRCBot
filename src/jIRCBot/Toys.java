@@ -33,10 +33,8 @@ public class Toys {
 		};
 
 		Random rand = new Random();
-
-		int randomNumber = rand.nextInt(eightBall.length);
-
-		return eightBall[randomNumber];
+		
+		return String.format("%s", eightBall[(rand.nextInt(eightBall.length))]);
 
 	}
 	
@@ -52,11 +50,7 @@ public class Toys {
 
 		Random rand = new Random();
 
-		int randomNumber = rand.nextInt(coin.length);
-
-		String answer = "It's " + coin[randomNumber];
-
-		return answer;
+		return String.format("It's %s", coin[(rand.nextInt(coin.length))]);
 
 	}
 	
@@ -64,7 +58,7 @@ public class Toys {
 	 * Generate a BOFH excuse
 	 */
 	public static String BOFH() {
-		String[] bofhFirst = {
+		String[] bofhA = {
 				"Temporary",
 				"Intermittant",
 				"Partial",
@@ -121,7 +115,7 @@ public class Toys {
 				"Non-Serious"
 		};
 		
-		String[] bofhSecond = {
+		String[] bofhB = {
 				"Array",
 				"Systems",
 				"Hardware",
@@ -178,7 +172,7 @@ public class Toys {
 				"Handler"
 		};
 		
-		String bofhThird[] = {
+		String bofhC[] = {
 				"Interruption",
 				"Destabilisation",
 				"Destruction",
@@ -214,7 +208,7 @@ public class Toys {
 
 		};
 		
-		String bofhFourth[] = {
+		String bofhD[] = {
 				"Error",
 				"Problem",
 				"Warning",
@@ -223,15 +217,12 @@ public class Toys {
 		};
 			
 		Random rand = new Random();
-		
-		int intBofhFirst = rand.nextInt(bofhFirst.length);
-		int intBofhSecond = rand.nextInt(bofhSecond.length);
-		int intBofhThird = rand.nextInt(bofhThird.length);
-		int intBofhFourth = rand.nextInt(bofhFourth.length);
-		
-		String bofhAnswer = bofhFirst[intBofhFirst] + " " + bofhSecond[intBofhSecond] + " " + bofhThird[intBofhThird] + " " + bofhFourth[intBofhFourth];
-		
-		return bofhAnswer;
+
+		return String.format("%s %s %s %s", 
+				bofhA[(rand.nextInt(bofhA.length))], 
+				bofhB[(rand.nextInt(bofhB.length))], 
+				bofhC[(rand.nextInt(bofhC.length))], 
+				bofhD[(rand.nextInt(bofhD.length))]);
 		
 	}
 	
