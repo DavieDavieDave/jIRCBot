@@ -41,6 +41,9 @@ public class jIRCBot extends ListenerAdapter {
 		String command = null;
 		String args = null;
 		
+		if(Owner.isBadUser(user))
+			return;
+		
 		if(eventText.contains(" ")) {
 			String[] tmpArr = eventText.split(" ", 2);
 			command = tmpArr[0];
@@ -92,6 +95,9 @@ public class jIRCBot extends ListenerAdapter {
 		String command = null;
 		String args = null;
 		
+		if(Owner.isBadUser(user))
+			return;
+		
 		if(eventText.contains(" ")) {
 			String[] tmpArr = eventText.split(" ", 2);
 			command = tmpArr[0];
@@ -125,6 +131,17 @@ public class jIRCBot extends ListenerAdapter {
 			case "delword":
 				if (BadWords.delWord(args))
 					event.respondPrivateMessage("Word deleted");
+				break;
+			case "addbaduser":
+				if (Owner.addBadUser(args))
+					event.respondPrivateMessage("Bad user added");
+				break;
+			case "delbaduser":
+				if (Owner.delBadUser(args))
+					event.respondPrivateMessage("Bad user deleted");
+				break;
+			case "listbadusers":
+				event.respondPrivateMessage(Owner.listBadUsers());
 				break;
 			case "listwords":
 				event.respondPrivateMessage(BadWords.listWords());
@@ -197,9 +214,13 @@ public class jIRCBot extends ListenerAdapter {
 		Global global = Global.getInstance();
 		Knowledge kb = new Knowledge();
 
+		String user = event.getUser().getNick().toString();
 		String eventText = event.getMessage();
 		String command = null;
 		String args = null;
+		
+		if(Owner.isBadUser(user))
+			return;
 		
 		if(eventText.contains(" ")) {
 			String[] tmpArr = eventText.split(" ", 2);

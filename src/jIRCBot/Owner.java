@@ -177,4 +177,138 @@ public class Owner {
 
 	}
 	
+	
+	/*
+	 * Add a bad user
+	 */
+	public static Boolean addBadUser(String user) {
+		
+		try {
+			
+			Global global = Global.getInstance();
+
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			properties.setListDelimiter('\u002C');
+			properties.reload();
+			
+			String[] badUsers = properties.getStringArray("badUsers");
+			
+			if (!Arrays.asList(badUsers).contains(user)) {
+
+				String[] tempArray = new String[ badUsers.length + 1 ];
+				for (int i=0; i<badUsers.length; i++)
+				{
+				    tempArray[i] = badUsers[i];
+				}
+				tempArray[badUsers.length] = user;
+				badUsers = tempArray;   
+	
+				String newBadUsers = String.join(",", badUsers);
+				
+				properties.setProperty("badUsers", newBadUsers);
+				properties.save();
+				
+				return true;
+			
+			} else {
+				
+				return false;
+				
+			}
+			
+		} catch (ConfigurationException e) {
+			
+			System.out.print(e.getMessage());
+			
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * Delete a bad user
+	 */
+	public static Boolean delBadUser(String user) {
+		
+		try {
+			
+			Global global = Global.getInstance();
+
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			properties.setListDelimiter('\u002C');
+			properties.reload();
+			
+			String[] badUsers = properties.getStringArray("badUsers");
+			
+			if (Arrays.asList(badUsers).contains(user)) {
+			
+				badUsers = (String[]) ArrayUtils.removeElement(badUsers, user);
+				
+				String newBadUsers = String.join(",", badUsers);
+				
+				properties.setProperty("badUsers", newBadUsers);
+				properties.save();
+				
+				return true;
+				
+			} else {
+				
+				return false;
+				
+			}
+			
+		} catch (ConfigurationException e) {
+			
+			System.out.print(e.getMessage());
+			
+		}
+		
+		return false;
+	}
+	
+	/*
+	 * List bad users
+	 */
+	public static String listBadUsers() throws ConfigurationException {
+		
+		Global global = Global.getInstance();
+		
+		PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+		properties.setListDelimiter('\u002C');
+		properties.reload();
+		
+		return String.join(", ", properties.getStringArray("badUsers"));
+
+	}
+	
+	/*
+	 * Compares the user to a know list of bad users and returns a boolean
+	 */
+	public static boolean isBadUser(String user) {
+
+		try {
+
+			Global global = Global.getInstance();
+
+			PropertiesConfiguration properties = new PropertiesConfiguration(global.config);
+			properties.setListDelimiter('\u002C');
+			properties.reload();
+
+			if (Arrays.asList(properties.getStringArray("badUsers")).contains(user)) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (ConfigurationException e) {
+
+			System.out.print(e.getMessage());
+
+		}
+
+		return false;
+
+	}
+	
+	
 }

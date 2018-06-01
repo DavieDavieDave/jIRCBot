@@ -208,6 +208,39 @@ Example:
     <exampleNick> listwords
         <jIRCBot> badword, notniceword, otherword   
 
+### Add a bad user
+
+    addbaduser <user>
+
+Adds a user to the ignore list.
+
+Example:
+
+    <exampleNick> addbaduser otherNick
+        <jIRCBot> Bad user added    
+
+### Delete a bad user
+
+    delbaduser <user>
+
+Removes a user from the ignore list.
+
+Example:
+
+    <exampleNick> delbaduser otherNick
+        <jIRCBot> Bad user deleted    
+
+### List bad users
+
+    listbadusers
+
+Returns a list of bad (ignored) users.
+
+Example:
+
+    <exampleNick> listbadusers
+        <jIRCBot> exampleNick, otherNick   
+
 ### Join a channel
 
     join #channel
