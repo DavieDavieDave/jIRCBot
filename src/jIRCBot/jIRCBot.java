@@ -147,11 +147,11 @@ public class jIRCBot extends ListenerAdapter {
 				event.respondPrivateMessage(BadWords.listWords());
 				break;
 			case "join":
-				event.respondPrivateMessage("Joining channel " + args);
+				event.respondPrivateMessage(String.format("Joining channel %s", args));
 				event.getBot().sendIRC().joinChannel(args);
 				break;
 			case "part":
-				event.respondPrivateMessage("Leaving channel " + args);
+				event.respondPrivateMessage(String.format("Leaving channel %s", args));
 				event.getBot().sendRaw().rawLine("PART " + args);
 				break;
 			case "listchannels":
@@ -160,10 +160,10 @@ public class jIRCBot extends ListenerAdapter {
 				for (Channel channel : channelsIterable) {
 					String name = channel.getName();
 					String mode = channel.getMode();
-					channelArrayList.add(name + " [" + mode + "]");
+					channelArrayList.add(String.format("%s [%s]", name, mode));
 				}
 				String channels = StringUtils.join(channelArrayList, ", ");
-				event.respondPrivateMessage("Channels: " + channels);
+				event.respondPrivateMessage(String.format("Channels: %s", channels));
 				break;
 			case "learn":
 				event.respondPrivateMessage(Knowledge.learn(args, user));
@@ -233,7 +233,7 @@ public class jIRCBot extends ListenerAdapter {
 
 		switch (command.toLowerCase()) {
 		case "!version":
-			event.respondWith("jIRCBot Version " + global.version);
+			event.respondWith(String.format("jIRCBot Version %s", global.version));
 			break;
 		case "!8ball":
 			event.respondWith(Toys.EightBall());
@@ -246,7 +246,7 @@ public class jIRCBot extends ListenerAdapter {
 			break;
 		case "!index":
 			String index = StringUtils.join(kb.getIndex(), ", ");
-			event.respondPrivateMessage("Index: " + index);
+			event.respondPrivateMessage(String.format("Index: %s", index));
 			break;
 		case "!zfscalc":
 			ZFSCalc zfscalc = ZFSCalc.getInstance();
