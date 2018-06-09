@@ -1,10 +1,12 @@
-package jIRCBot;
+package com.invaliddomain.jircbot.tools;
 
 import java.util.Arrays;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 import org.apache.commons.lang.ArrayUtils;
 import org.mindrot.jbcrypt.*;
+
+import com.invaliddomain.jircbot.Global;
 
 public class Owner {
 		

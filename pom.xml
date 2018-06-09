@@ -164,7 +164,7 @@
                 <manifest>
                   <addClasspath>true</addClasspath>
                   <classpathPrefix>lib/</classpathPrefix>
-                  <mainClass>jIRCBot.jIRCBot</mainClass>
+                  <mainClass>com.invaliddomain.jircbot.jIRCBot</mainClass>
                 </manifest>
                 <manifestEntries>
                   <Class-Path>.</Class-Path>
@@ -179,7 +179,7 @@
             <manifest>
               <addClasspath>true</addClasspath>
               <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>jIRCBot.jIRCBot</mainClass>
+              <mainClass>com.invaliddomain.jircbot.jIRCBot</mainClass>
             </manifest>
             <manifestEntries>
               <Class-Path>.</Class-Path>

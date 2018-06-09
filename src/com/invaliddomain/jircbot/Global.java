@@ -1,9 +1,9 @@
-package jIRCBot;
+package com.invaliddomain.jircbot;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
 
-class Global {
+public class Global {
 
 	private static Global instance = null;
 	

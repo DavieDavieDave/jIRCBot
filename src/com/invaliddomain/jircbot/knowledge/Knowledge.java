@@ -1,4 +1,4 @@
-package jIRCBot;
+package com.invaliddomain.jircbot.knowledge;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -13,6 +13,9 @@ import java.sql.ResultSet;
 import java.io.File;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.configuration.PropertiesConfiguration;
+
+import com.invaliddomain.jircbot.Global;
+import com.invaliddomain.jircbot.tools.BadWords;
 
 public class Knowledge {
 	

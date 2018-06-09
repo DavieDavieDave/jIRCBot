@@ -1,4 +1,4 @@
-package jIRCBot;
+package com.invaliddomain.jircbot.tools;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,6 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.lang.StringEscapeUtils;
+
+import com.invaliddomain.jircbot.Global;
 
 public class URL {
 	

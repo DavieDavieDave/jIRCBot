@@ -1,4 +1,4 @@
-package jIRCBot;
+package com.invaliddomain.jircbot.tools;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

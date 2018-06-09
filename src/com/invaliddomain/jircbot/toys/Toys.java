@@ -1,4 +1,4 @@
-package jIRCBot;
+package com.invaliddomain.jircbot.toys;
 
 import java.util.Random;
 

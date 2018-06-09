@@ -1,4 +1,4 @@
-package jIRCBot;
+package com.invaliddomain.jircbot;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,6 +17,13 @@ import org.pircbotx.hooks.events.MessageEvent;
 import org.pircbotx.hooks.events.PrivateMessageEvent;
 import org.pircbotx.hooks.events.VersionEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
+
+import com.invaliddomain.jircbot.knowledge.Knowledge;
+import com.invaliddomain.jircbot.tools.BadWords;
+import com.invaliddomain.jircbot.tools.Owner;
+import com.invaliddomain.jircbot.tools.URL;
+import com.invaliddomain.jircbot.tools.ZFSCalc;
+import com.invaliddomain.jircbot.toys.Toys;
 
 public class jIRCBot extends ListenerAdapter {
 
