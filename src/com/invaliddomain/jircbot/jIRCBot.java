@@ -22,6 +22,7 @@ import com.invaliddomain.jircbot.knowledge.Knowledge;
 import com.invaliddomain.jircbot.tools.BadWords;
 import com.invaliddomain.jircbot.tools.Owner;
 import com.invaliddomain.jircbot.tools.URL;
+import com.invaliddomain.jircbot.tools.User;
 import com.invaliddomain.jircbot.tools.ZFSCalc;
 import com.invaliddomain.jircbot.toys.BOFH;
 import com.invaliddomain.jircbot.toys.EightBall;
@@ -50,7 +51,7 @@ public class jIRCBot extends ListenerAdapter {
 		String command = null;
 		String args = null;
 		
-		if(Owner.isBadUser(user))
+		if(User.isBadUser(user))
 			return;
 		
 		if(eventText.contains(" ")) {
@@ -104,7 +105,7 @@ public class jIRCBot extends ListenerAdapter {
 		String command = null;
 		String args = null;
 		
-		if(Owner.isBadUser(user))
+		if(User.isBadUser(user))
 			return;
 		
 		if(eventText.contains(" ")) {
@@ -123,15 +124,15 @@ public class jIRCBot extends ListenerAdapter {
 					event.respondPrivateMessage("Password set");
 				break;
 			case "adduser":
-				if (Owner.addUser(args))
+				if (User.addUser(args))
 					event.respondPrivateMessage("User added");
 				break;
 			case "deluser":
-				if (Owner.delUser(args))
+				if (User.delUser(args))
 					event.respondPrivateMessage("User deleted");
 				break;
 			case "listusers":
-				event.respondPrivateMessage(Owner.listUsers());
+				event.respondPrivateMessage(User.listUsers());
 				break;
 			case "addword":
 				if (BadWords.addWord(args))
@@ -142,15 +143,15 @@ public class jIRCBot extends ListenerAdapter {
 					event.respondPrivateMessage("Word deleted");
 				break;
 			case "addbaduser":
-				if (Owner.addBadUser(args))
+				if (User.addBadUser(args))
 					event.respondPrivateMessage("Bad user added");
 				break;
 			case "delbaduser":
-				if (Owner.delBadUser(args))
+				if (User.delBadUser(args))
 					event.respondPrivateMessage("Bad user deleted");
 				break;
 			case "listbadusers":
-				event.respondPrivateMessage(Owner.listBadUsers());
+				event.respondPrivateMessage(User.listBadUsers());
 				break;
 			case "listwords":
 				event.respondPrivateMessage(BadWords.listWords());
@@ -228,7 +229,7 @@ public class jIRCBot extends ListenerAdapter {
 		String command = null;
 		String args = null;
 		
-		if(Owner.isBadUser(user))
+		if(User.isBadUser(user))
 			return;
 		
 		if(eventText.contains(" ")) {
