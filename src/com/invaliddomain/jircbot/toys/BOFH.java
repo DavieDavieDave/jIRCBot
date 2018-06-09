@@ -2,62 +2,11 @@ package com.invaliddomain.jircbot.toys;
 
 import java.util.Random;
 
-public class Toys {
-
-	/*
-	 * Simple 8-ball
-	 */
-	public static String EightBall() {
-
-		String[] eightBall = {
-				"It is certain",
-				"It is decidedly so",
-				"Without a doubt",
-				"Yes definitely",
-				"You may rely on it",
-				"As I see it, yes",
-				"Most likely",
-				"Outlook good",
-				"Yes",
-				"Signs point to yes",
-				"Reply hazy try again",
-				"Ask again later",
-				"Better not tell you now",
-				"Cannot predict now",
-				"Concentrate and ask again",
-				"Don't count on it",
-				"My reply is no",
-				"My sources say no",
-				"Outlook not so good",
-				"Very doubtful"
-		};
-
-		Random rand = new Random();
-		
-		return String.format("%s", eightBall[(rand.nextInt(eightBall.length))]);
-
-	}
-	
-	/*
-	 * Coin flip
-	 */
-	public static String FlipCoin() {
-
-		String[] coin = {
-				"heads",
-				"tails"
-		};
-
-		Random rand = new Random();
-
-		return String.format("It's %s", coin[(rand.nextInt(coin.length))]);
-
-	}
-	
+public class BOFH {
 	/*
 	 * Generate a BOFH excuse
 	 */
-	public static String BOFH() {
+	public static String main() {
 		String[] bofhA = {
 				"Temporary",
 				"Intermittant",
@@ -225,5 +174,4 @@ public class Toys {
 				bofhD[(rand.nextInt(bofhD.length))]);
 		
 	}
-	
 }

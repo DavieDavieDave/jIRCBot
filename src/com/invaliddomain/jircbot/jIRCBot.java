@@ -23,7 +23,9 @@ import com.invaliddomain.jircbot.tools.BadWords;
 import com.invaliddomain.jircbot.tools.Owner;
 import com.invaliddomain.jircbot.tools.URL;
 import com.invaliddomain.jircbot.tools.ZFSCalc;
-import com.invaliddomain.jircbot.toys.Toys;
+import com.invaliddomain.jircbot.toys.BOFH;
+import com.invaliddomain.jircbot.toys.EightBall;
+import com.invaliddomain.jircbot.toys.FlipCoin;
 
 public class jIRCBot extends ListenerAdapter {
 
@@ -243,13 +245,13 @@ public class jIRCBot extends ListenerAdapter {
 			event.respondWith(String.format("jIRCBot Version %s", global.version));
 			break;
 		case "!8ball":
-			event.respondWith(Toys.EightBall());
+			event.respondWith(EightBall.main());
 			break;
 		case "!bofh":
-			event.respondWith(Toys.BOFH());
+			event.respondWith(BOFH.main());
 			break;
 		case "!flipcoin":
-			event.respondWith(Toys.FlipCoin());
+			event.respondWith(FlipCoin.main());
 			break;
 		case "!index":
 			String index = StringUtils.join(kb.getIndex(), ", ");
