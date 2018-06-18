@@ -124,6 +124,9 @@ When querying for ?bar, the result for foo will be returned.
 	
 Example:
 
+	<exampleNick> ?bar
+	    <jIRCBot> [bar -> foo] This is foo
+
 # Bot owner commands
 
 Bot owner commands only work via PRIVMSG. The bot onwer must be authenticated to use these commands.

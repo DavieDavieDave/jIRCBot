@@ -117,7 +117,7 @@ public class Knowledge {
 					String linkTopic = link.group(1).toLowerCase();
 					String linkResult[] = kb.getKnowledge(linkTopic);
 					if (linkResult[0] != null) {
-						String answer = String.format("[%s -> %s] %s", linkTopic, topic, linkResult[1]);
+						String answer = String.format("[%s -> %s] %s", topic, linkTopic, linkResult[1]);
 						return answer;
 					} else {
 						String answer = String.format("Well, this is embarrassing! I have a link to %s for %s, but it doesn't exist in my database.", topic, linkTopic);
