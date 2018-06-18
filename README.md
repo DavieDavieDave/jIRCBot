@@ -116,6 +116,14 @@ Example:
     <exampleNick> !forget sometopic 
         <jIRCBot> OK exampleNick, I forgot about sometopic.
 
+### Linking knowledge topics
+
+	!learn bar see ?foo
+
+When querying for ?bar, the result for foo will be returned.
+	
+Example:
+
 # Bot owner commands
 
 Bot owner commands only work via PRIVMSG. The bot onwer must be authenticated to use these commands.

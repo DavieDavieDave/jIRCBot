@@ -104,10 +104,26 @@ public class Knowledge {
 
 			Knowledge kb = new Knowledge();
 			String result[] = kb.getKnowledge(topic);
+			
+			String linkRX = "^[Ss]ee \\?(.*)";
 
-			if (result[0] != null) {
+			if ((result[0] != null) && !result[1].matches(linkRX)) {
 				String answer = String.format("[%s] %s", topic, result[1]);
 				return answer;
+			} else if ((result[0] != null) && result[1].matches(linkRX)) {
+				Pattern linkPattern = Pattern.compile(linkRX);
+				Matcher link = linkPattern.matcher(result[1]);
+				if (link.matches()) {
+					String linkTopic = link.group(1).toLowerCase();
+					String linkResult[] = kb.getKnowledge(linkTopic);
+					if (linkResult[0] != null) {
+						String answer = String.format("[%s -> %s] %s", linkTopic, topic, linkResult[1]);
+						return answer;
+					} else {
+						String answer = String.format("Well, this is embarrassing! I have a link to %s for %s, but it doesn't exist in my database.", topic, linkTopic);
+						return answer;
+					}
+				}
 			} else {
 				String answer = String.format("Sorry, but I don't know about %s.", topic);
 				return answer;
